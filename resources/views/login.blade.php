@@ -47,13 +47,13 @@
               <form class="form-horizontal mt-4" action="" method="POST">
                     @csrf
                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="username">Username:</label>
+                        <label class="control-label col-sm-2" for="username">Tài khoản người dùng:</label>
                         <div class="col-sm-10">
                              <input type="text" class="form-control" name="username" id="username" placeholder="Nhập username">
                         </div>
                    </div>
                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="password">Password:</label>
+                        <label class="control-label col-sm-2" for="password">Mật khẩu:</label>
                         <div class="col-sm-10">
                              <input type="password" class="form-control" id="password" name="password" placeholder="Nhập password">
                              <a href="{{  route('resetpwd') }}">Quên mật khẩu</a>

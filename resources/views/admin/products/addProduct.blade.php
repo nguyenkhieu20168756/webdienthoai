@@ -6,31 +6,54 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Product
-                    <small>Add</small>
+                <h1 class="page-header">Sản phẩm
+                    <small>Thêm</small>
                 </h1>
                 <form action="{{ route('product.add') }}" method="POST" enctype="multipart/form-data">
 
                     @csrf
 
                     <div class="form-group">
-                        <label for="img">Image path:</label>
-                        <input type="text" class="form-control" placeholder="Enter image path" id="img" name="img">
-                        <small style="color: #676767">Ex: ./img/product/product.png, you should update folder public</small>
+                        <label for="title">Tên sản phẩm:</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="title" name="title">
                     </div>
                     <div class="form-group">
-                        <label for="product-name">Product name:</label>
-                        <input type="text" class="form-control" placeholder="Enter product name" id="product-name" name="product-name">
+                        <label for="price">Giá tiền:</label>
+                        <input type="number" class="form-control" placeholder="Nhập giá tiền" id="price" name="price">
                     </div>
                     <div class="form-group">
-                        <label for="price">Price:</label>
-                        <input type="text" class="form-control" placeholder="Enter price" id="price" name="price">
+                        <label for="content">Mô tả sản phẩm:</label>
+                        <textarea class="form-control" id="content" name="content"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="color">Color:</label>
-                        <input type="text" class="form-control" placeholder="Enter color" id="color" name="color">
+                        <label for="category_id">Danh mục sản phẩm:</label>
+                        <select class="form-control" name="category_id" id="category_id">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category['id'] }}">{{ $category['title'] }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <div class="form-group">
+                        <label for="producer_id">Nhà cung cấp:</label>
+                        <select class="form-control" name="producer_id" id="producer_id">
+                            @foreach ($producers as $producer)
+                                <option value="{{ $producer['id'] }}">{{ $producer['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="brand_id">Thương hiệu sản phẩm:</label>
+                        <select class="form-control" name="brand_id" id="brand_id">
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand['id'] }}">{{ $brand['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Chọn hình ảnh</label>
+                        <input id="image" type="file" name="image" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
                   </form>
             </div>
         </div>

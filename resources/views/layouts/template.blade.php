@@ -44,7 +44,7 @@
         </nav>
         <div class="container mt-4 mb-4 logo">
             <a href="{{ route('index') }}">
-                <h1 style="font-family: 'Exo 2', sans-serif; color: gray">PHONE
+                <h1 style="font-family: 'Exo 2', sans-serif; color: gray">ACCESSORIES
                 <span style="color: #f46164">STORE</span></h1>
             </a>
             <form method="POST" action="" class="form-search" enctype="multipart/form-data">

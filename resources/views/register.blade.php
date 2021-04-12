@@ -50,7 +50,7 @@
                         <h2>THÔNG TIN TÀI KHOẢN</h2>
                         <div class="form-group">
                              <div class="row mr-auto ml-auto">
-                                  <label for="" class="col-sm-3">Username
+                                  <label for="" class="col-sm-3">Tài khoản người dùng
                                        <span class="warning">(*)</span>
                                   </label>
                                   <input type="text" class="col-sm-9 form-control" name="username" required>
