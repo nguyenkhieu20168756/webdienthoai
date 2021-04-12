@@ -22,6 +22,10 @@
                         <input type="number" class="form-control" placeholder="Nhập giá tiền" id="price" name="price">
                     </div>
                     <div class="form-group">
+                        <label for="quantity">Số lượng:</label>
+                        <input type="number" class="form-control" placeholder="Nhập số lượng" id="quantity" name="quantity">
+                    </div>
+                    <div class="form-group">
                         <label for="content">Mô tả sản phẩm:</label>
                         <textarea class="form-control" id="content" name="content"></textarea>
                     </div>

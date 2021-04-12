@@ -6,16 +6,23 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Danh mục sản phẩm
+                <h1 class="page-header">Tin tức
                     <small>Sửa</small>
                 </h1>
-                <form action="{{ route('category.edit',['id' => $category['id']]) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('article.edit',['id' => article['id']]) }}" method="POST" enctype="multipart/form-data">
 
                     @csrf
-
                     <div class="form-group">
-                        <label for="category-name">Tên danh mục:</label>
-                        <input type="text" class="form-control" placeholder="Nhập tên danh mục" id="category-name" name="category-name" value='{{ $category['title'] }}'>
+                        <label for="article-title">Tiêu đề:</label>
+                        <input type="text" class="form-control" placeholder="Nhập tiêu đề bài viết" id="article-title" name="article-title" value='{{ $article['title'] }}' required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Nội dung:</label>
+                        <textarea class="form-control" id="content" name="content" value='{{ $article['content'] }}'></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="sort-order">Thứ tự hiển thị:</label>
+                        <input type="number" class="form-control" placeholder="Nhập thứ tự xuất hiện" id="sort-order" name="sort-order"  value='{{ $article['sort_order'] }}' required>
                     </div>
                     <button type="submit" class="btn btn-primary">Sửa</button>
                   </form>

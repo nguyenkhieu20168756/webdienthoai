@@ -29,8 +29,8 @@
                             <td>{{ $article['content'] }}</td>
                             <td>{{ $article['sort_order'] }}</td>
                             <td>
-                                <a href="{{ route('category.delete',['id'=>$article['id']]) }}"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                <a href="{{ route('category.edit.form',['id'=>$article['id']]) }}" style="margin:0 1rem;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a href="{{ route('article.delete',['id'=>$article['id']]) }}"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                <a href="{{ route('article.edit.form',['id'=>$article['id']]) }}" style="margin:0 1rem;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             </td>
                         </tr>
                     @endforeach

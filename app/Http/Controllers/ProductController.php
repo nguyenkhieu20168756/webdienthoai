@@ -59,12 +59,12 @@ class ProductController extends Controller
                 $extension = $request->image->extension();
                 $request->image->storeAs('/public/images/products', $validated['title'].".".$extension);
                 $product = Product::create([
-                   'name' => $validated['title'],
+                   'title' => $validated['title'],
                    'price' => $validated['price'],
                    'category_id' => $validated['category_id'],
                    'image_path' => $validated['title'].".".$extension,
                    'producer_id' => $validated['producer_id'],
-                   'description' => $validated['description'],
+                   'description' => $validated['content'],
                    'brand_id' => $validated['brand_id'],
                    'quantity' => $validated['quantity']
                 ]);
