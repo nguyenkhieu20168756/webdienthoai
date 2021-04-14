@@ -18,6 +18,10 @@
                         <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="title" name="title">
                     </div>
                     <div class="form-group">
+                        <label for="sku">Mã sản phẩm:</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" id="sku" name="sku">
+                    </div>
+                    <div class="form-group">
                         <label for="price">Giá tiền:</label>
                         <input type="number" class="form-control" placeholder="Nhập giá tiền" id="price" name="price">
                     </div>

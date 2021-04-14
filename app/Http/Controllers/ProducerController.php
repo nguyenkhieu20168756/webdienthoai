@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Producer;
-
+use Illuminate\Support\Facades\DB;
 class ProducerController extends Controller
 {
     /**
@@ -45,7 +45,7 @@ class ProducerController extends Controller
             'name' => $request->input('producer-name')
         ]);
         $producer->save();
-        return redirect()->route('producer.list');
+        return redirect()->route('producer.list')->with("success","Lưu thành công");
     }
 
     /**
@@ -83,7 +83,7 @@ class ProducerController extends Controller
         $producer = Producer::find($id);
         $producer->name = $request->input('producer-name');
         $producer->save();
-        return redirect()->route('producer.list');
+        return redirect()->route('producer.list')->with("success","Sửa thành công");
     }
 
     /**
@@ -94,8 +94,16 @@ class ProducerController extends Controller
      */
     public function destroy($id)
     {
-        $producer = Producer::find($id);
-        $producer->delete();
-        return redirect()->route('producer.list');
+        $check = DB::select('select * from products where producer_id = :id', ['id' => $id]);
+        if(is_array($check)){
+            if(count($check) > 0){
+                return back()->with("invalid","Hiện có một số sản phẩm đang có nhà cung cấp này");
+            }
+            else{
+                $producer = Producer::find($id);
+                $producer->delete();
+                return redirect()->route('producer.list')->with("success","Xóa thành công");
+            }
+        }
     }
 }

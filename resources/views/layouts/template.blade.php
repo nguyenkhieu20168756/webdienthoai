@@ -75,6 +75,14 @@
                         <li class="nav-item"><a href="{{  route('products') }}" class="nav-link">PHỤ KIỆN</a></li>
                         <li class="nav-item"><a href="{{  route('article') }}" class="nav-link">BÀI VIẾT</a></li>
                         <li class="nav-item"><a href="{{  route('contact') }}" class="nav-link">LIÊN HỆ</a></li>
+						<div class="dropdown">
+							<a type="button" class="nav-link dropdown-toggle mt-1" style="font-size:14px;" data-toggle="dropdown">PHỤ KIỆN</a>
+							<ul class="dropdown-menu">
+								@foreach ($categories as $category)
+									<li><a class="pl-3" href="{{ route('product.category',['id' => $category->id]) }}">{{ $category->title }}</a></li>
+								@endforeach
+							</ul>
+						</div>
                     </ul>
                 </div>
             </div>

@@ -18,6 +18,7 @@
                         <input type="text" class="form-control" placeholder="Nhập tên danh mục" id="category-name" name="category-name" value='{{ $category['title'] }}'>
                     </div>
                     <button type="submit" class="btn btn-primary">Sửa</button>
+                    <a href="{{ route('category.back') }}" type="button" class="btn btn-danger">Quay lại</a>
                   </form>
             </div>
         </div>

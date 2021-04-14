@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Brand;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
 {
@@ -52,7 +52,7 @@ class BrandController extends Controller
                    'img_path' => $validated['brand-name'].".".$extension,
                 ]);
                 $brand->save();
-                return redirect()->route('brand.list');
+                return redirect()->route('brand.list')->with("success","Lưu thành công");
             }
         }
     }
@@ -92,7 +92,7 @@ class BrandController extends Controller
         $brand = Brand::find($id);
         $brand->name = $request->input('brand-name');
         $brand->save();
-        return redirect()->route('brand.list');
+        return redirect()->route('brand.list')->with("success","Sửa thành công");
     }
 
     /**
@@ -103,9 +103,17 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        $brand = Brand::find($id);
-        $brand->delete();
-        return redirect()->route('brand.list');
+        $check = DB::select('select * from products where brand_id = :id', ['id' => $id]);
+        if (is_array($check)) {
+            if (count($check) > 0) {
+                return back()->with("invalid", "Hiện có một số sản phẩm đang có thương hiệu này");
+            }
+            else{
+                $brand = Brand::find($id);
+                $brand->delete();
+                return redirect()->route('brand.list')->with("success","Xóa thành công");
+            }
+        }
     }
 
     /**
@@ -119,7 +127,7 @@ class BrandController extends Controller
         $brand = Brand::find($id);
         $brand->status = 0;
         $brand->save();
-        return redirect()->route('brand.list');
+        return redirect()->route('brand.list')->with("success","Vô hiệu hóa thành công");
     }
 
     /**
@@ -133,6 +141,6 @@ class BrandController extends Controller
         $brand = Brand::find($id);
         $brand->status = 1;
         $brand->save();
-        return redirect()->route('brand.list');
+        return redirect()->route('brand.list')->with("success","Mở thành công");
     }
 }

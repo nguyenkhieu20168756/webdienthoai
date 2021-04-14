@@ -51,7 +51,7 @@ class PromotionController extends Controller
             'quantity' => $request->input('quantity')
         ]);
         $promotion->save();
-        return redirect()->route('promotion.list');
+        return redirect()->route('promotion.list')->with("success","Lưu thành công");
     }
 
     /**
@@ -92,7 +92,7 @@ class PromotionController extends Controller
         $promotion->price = $request->input('price');
         $promotion->quantity = $request->input('quantity');
         $promotion->save();
-        return redirect()->route('promotion.list');
+        return redirect()->route('promotion.list')->with("success","Sửa thành công");
     }
 
     /**
@@ -105,6 +105,6 @@ class PromotionController extends Controller
     {
         $promotion = Promotion::find($id);
         $promotion->delete();
-        return redirect()->route('promotion.list');
+        return redirect()->route('promotion.list')->with("success","Xóa thành công");
     }
 }

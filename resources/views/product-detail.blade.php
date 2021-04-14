@@ -40,30 +40,21 @@
                     phẩm</span></small>
             <div class="row mt-4 mb-3">
                 <div class="col-md-6 sp-large">
-                    <a href=""><img src="{{asset('assets/img/products/phukien/phukien1.png')}}"
+                    <a href=""><img src="{{ asset('storage/images/products/'.$product['image_path']) }}" alt="{{ $product['id'] }}"
                             alt=""></a>
                 </div>
                 <div class="col-md-6 describe">
-                    <h2 class="ng-binding"></h2>
+                    <h2 class="ng-binding">{{ $product['name'] }}</h2>
                     <div class="price">
-                        <span class="price-new ng-binding">3.400.000đ</span>
+                        <span class="price-new ng-binding">Giá: {{ number_format($product['price'],-3,',',',') }}₫</span>
                     </div>
-                    <span class="product-code ng-binding d-block mb-2"><b>Mã SP:</b></span>
-                    <p class="describe-detail text-justify mb-2">
-                        </p>
-                    <iframe
-                        class="mb-5"
-                        src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fluankma&width=450&layout=standard&action=like&size=small&share=true&height=35&appId=415196006363533"
-                        width="450" height="35" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-                        allowfullscreen="true"
-                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-
+                    <span class="product-code ng-binding d-block mb-2"><b>Mã SP:</b> {{ $product['sku'] }} </span>
                     <form class="add-to-cart">
                         <div class="product-detail-quantity">
-                            <input type="hidden" value="" name="product_id">
+                            <input type="hidden" value="{{ $product['id'] }}" name="product_id">
                             <h5>Số lượng:</h5>
                             <div style="display: flex; flex-direction: row; ">
-                                <button type="button" class="quantity-btn">
+                                <button type="button" class="quantity-btn" onclick="addQuantity(-1)" style="outline: none;">
                                     <svg viewBox="0 0 409.6 409.6">
                                         <g>
                                             <g>
@@ -74,10 +65,8 @@
                                         </g>
                                     </svg>
                                 </button>
-                                <input id="product-detail-quantity-input" class="quantity-input" type="number" value="1"
-                                    class="text ng-valid ng-dirty ng-valid-number ng-touched" ng-model="InputQuantity"
-                                    ng-init="InputQuantity=1" name="product_quantity">
-                                <button type="button" class="quantity-btn">
+                                <input id="product-detail-quantity-input" class="quantity-input" type="number" value="1" name="product_quantity">
+                                <button type="button" class="quantity-btn" onclick="addQuantity(1)" style="outline: none;">
                                     <svg viewBox="0 0 426.66667 426.66667">
                                         <path
                                             d="m405.332031 192h-170.664062v-170.667969c0-11.773437-9.558594-21.332031-21.335938-21.332031-11.773437 0-21.332031 9.558594-21.332031 21.332031v170.667969h-170.667969c-11.773437 0-21.332031 9.558594-21.332031 21.332031 0 11.777344 9.558594 21.335938 21.332031 21.335938h170.667969v170.664062c0 11.777344 9.558594 21.335938 21.332031 21.335938 11.777344 0 21.335938-9.558594 21.335938-21.335938v-170.664062h170.664062c11.777344 0 21.335938-9.558594 21.335938-21.335938 0-11.773437-9.558594-21.332031-21.335938-21.332031zm0 0">
@@ -99,52 +88,42 @@
                     <h1>CHI TIẾT SẢN PHẨM</h1>
                 </div>
                 <div class="content-describe mb-5 text-justify">
-                    Điều kiện <br>
-                    - Hotdeal giao sản phẩm theo màu đến tận tay khách hàng. <br>
-                    + Đối với khu vực TP.HCM: Miễn phí. <br>
-                    + Đối với các tỉnh thành khác: Chuyển phát nhanh theo phí bưu điện. <br>
-                    - Áp dụng cho Áo công sở tay búp sang trọng <br>
-                    - Màu sắc: hồng, xanh, trắng <br>
-                    - Kích cỡ: Freesize <br>
-                    - Thời gian cuối giao sản phẩm đến hết 23/05/2015, không giao sản phẩm ngày chủ nhật.
-                    <br>
-                    - Khách hàng không bù thêm tiền khi nhận sản phẩm. <br>
-                    - Khách hàng vui lòng kiểm tra sản phẩm trước khi nhận hàng, Hotdeal không chịu trách
-                    nhiệm đổi trả sản phẩm sau khi giao hàng. <br>
+                    {!! $product['description'] !!}
                 </div>
 
                 <div class="heading-lg">
                     <h1>SẢN PHẨM HOT</h1>
                 </div>
-                {{-- <div class="row">
-                    <div class="col-3 mt-3">
-                        <div class="card">
-                            <div class="card-image">
-                                <a href="">
-                                    <img src="" class="card-img-top" alt="" />
-                                </a>
+                @foreach ($randomProduct as $item)
+                    <div class="row">
+                        <div class="col-3 mt-3">
+                            <div class="card">
+                                <div class="card-image">
+                                    <a href="{{ route('product.detail',['id' => $item['id']]) }}">
+                                        <img src="{{ asset('storage/images/products/'.$item['image_path']) }}" class="card-img-top" />
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="box-product-block">
-                            <div class="name text-center">
-                                <a href="" title="">
-                                    <b></b>
-                                </a>
+                            <div class="box-product-block">
+                                <div class="name text-center">
+                                    <a href="{{ route('product.detail',['id' => $item['id']]) }}" class="text-dark">
+                                        <b>{{ $item['title'] }}</b>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="price text-center">
-                            <span class="price-new"></span>
-                        </div>
-                        <form class="add-to-cart" action="" method="POST">
-                            <div class="col text-center">
-                                <input type="hidden" name="product_id" value="" />
-                                <input type="hidden" name="product_quantity" value="1" />
-                                <button type="submit" class="buy" name="buy"><i class="fas fa-shopping-cart"></i> Mua</button>
+                            <div class="price text-center">
+                                <span class="price-new">{{ number_format($item['price'],-3,',',',') }}₫</span>
                             </div>
-                        </form>
+                            <form class="add-to-cart" action="" method="POST">
+                                <div class="col text-center">
+                                    <input type="hidden" name="product_id" value="{{ $item['id'] }}" />
+                                    <input type="hidden" name="product_quantity" value="1" />
+                                    <button type="submit" class="buy" name="buy"><i class="fas fa-shopping-cart"></i> Mua</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </div> --}}
-            </div>
+                @endforeach
         </div>
     </div>
 </div>

@@ -44,6 +44,18 @@
               <div class="heading-lg">
                    <h1>ĐĂNG NHẬP HỆ THỐNG</h1>
               </div>
+              @if(Session::has('invalid'))
+                    <div class="alert alert-danger alert-dismissible">
+                         <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                         {{Session::get('invalid')}}
+                    </div>
+               @endif
+               @if(Session::has('success'))
+                    <div class="alert alert-danger alert-success">
+                         <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                         {{Session::get('success')}}
+                    </div>
+               @endif
               <form class="form-horizontal mt-4" action="" method="POST">
                     @csrf
                    <div class="form-group">

@@ -10,3 +10,11 @@ $(document).ready(function () {
         $('html,body').animate({ scrollTop: 0 }, 600);
     });
 });
+function addQuantity(quan) {
+    let sum = parseInt($("#product-detail-quantity-input").val()) + parseInt(quan);
+    if (sum < 1) {
+        $("#product-detail-quantity-input").val(1);
+    } else {
+        $("#product-detail-quantity-input").val(sum);
+    }
+}

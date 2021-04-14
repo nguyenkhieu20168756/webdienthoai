@@ -53,7 +53,7 @@ class SlideController extends Controller
                    'image_path' => $validated['slide-name'].".".$extension,
                 ]);
                 $slide->save();
-                return redirect()->route('slide.list');
+                return redirect()->route('slide.list')->with("success","Lưu thành công");
             }
         }
     }
@@ -94,7 +94,7 @@ class SlideController extends Controller
         $slide->name = $request->input('slide-name');
         $slide->sort_order = $request->input('sort-order'); 
         $slide->save();
-        return redirect()->route('slide.list');
+        return redirect()->route('slide.list')->with("success","Sửa thành công");
     }
 
     /**
@@ -107,7 +107,7 @@ class SlideController extends Controller
     {
         $slide = Slide::find($id);
         $slide->delete();
-        return redirect()->route('slide.list');
+        return redirect()->route('slide.list')->with("success","Xóa thành công");
     }
 
     /**
@@ -121,7 +121,7 @@ class SlideController extends Controller
         $slide = Slide::find($id);
         $slide->status = 0;
         $slide->save();
-        return redirect()->route('slide.list');
+        return redirect()->route('slide.list')->with("success","Vô hiệu hóa thành công");
     }
 
     /**
@@ -135,6 +135,6 @@ class SlideController extends Controller
         $slide = Slide::find($id);
         $slide->status = 1;
         $slide->save();
-        return redirect()->route('slide.list');
+        return redirect()->route('slide.list')->with("success","Mở thành công");
     }
 }

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Article;
+use Illuminate\Support\Facades\DB;
 
-class ArticleController extends Controller
+
+class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,19 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::all();
-        return view('admin.articles.listArticle',['articles'=>$articles]);
+        $slides = DB::table('slides')->where('status','=',1)->orderBy('sort_order')->get();
+        $slideFirst = DB::table('slides')->where('status','=',1)->first();
+        $specialBrand = DB::table('brands')->where('status','=',1)->limit(3)->get();
+        $brands = DB::table('brands')->where('status','=',1)->get();
+        $products = DB::table('products')->where('status','=',1)->orderBy('category_id')->paginate(12);
+        return view('index',
+        [
+            'slides' => $slides,
+            'slideFirst' => $slideFirst->id,
+            'specialBrand' => $specialBrand,
+            'brands' => $brands,
+            'products' => $products
+        ]);
     }
 
     /**
@@ -25,7 +37,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('admin.articles.addArticle');
+        //
     }
 
     /**
@@ -36,20 +48,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        // Form validation
-        $this->validate($request, [
-            'article-title' => 'required',
-            'content' => 'required',
-            'sort-order' => 'required'
-        ]);
-        //  Store data in database
-        $article = new Article([
-            'title' => $request->input('article-title'),
-            'content' => $request->input('content'),
-            'sort_order' => $request->input('sort-order')
-        ]);
-        $article->save();
-        return redirect()->route('article.list')->with("success","Lưu thành công");
+        //
     }
 
     /**
@@ -71,8 +70,7 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article = Article::find($id);
-        return view('admin.articles.editArticle',['article' => $article]);
+        //
     }
 
     /**
@@ -84,12 +82,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $article = Article::find($id);
-        $article->title =  $request->input('article-title');
-        $article->content = $request->input('content');
-        $article->sort_order = $request->input('sort-order');
-        $article->save();
-        return redirect()->route('article.list')->with("success","Sửa thành công");
+        //
     }
 
     /**
@@ -100,8 +93,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $article = Article::find($id);
-        $article->delete();
-        return redirect()->route('article.list')->with("success","Xóa thành công");
+        //
     }
+
 }

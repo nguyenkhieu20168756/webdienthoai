@@ -8,22 +8,30 @@
             <div id="banner" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ul class="carousel-indicators">
-                    <li data-target="#banner" data-slide-to="0" class="active"></li>
-                    <li data-target="#banner" data-slide-to="1"></li>
-                    <li data-target="#banner" data-slide-to="2"></li>
+                    @foreach ($slides as $slide)
+                        <?php $count = 0; ?>
+                        @if ($slide->id === $slideFirst)
+                            <li data-target="#banner" data-slide-to="{{ $count }}" class="active"></li>
+                        @else
+                            <li data-target="#banner" data-slide-to="{{ $count }}"></li>
+                        @endif
+                        <?php  $count++; ?>
+                    @endforeach
                 </ul>
 
                 <!-- The slideshow -->
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="{{asset('assets/img/slides/slide1.png')}}" alt="1">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{asset('assets/img/slides/slide2.png')}}" alt="2">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="{{asset('assets/img/slides/slide3.png')}}" alt="3">
-                    </div>
+                    @foreach ($slides as $slide)
+                        @if ($slide->id === $slideFirst)
+                            <div class="carousel-item active">
+                                <img src="{{ asset('storage/images/slides/'.$slide->image_path) }}" alt={{ $slide->id }}>
+                            </div>
+                        @else
+                            <div class="carousel-item">
+                                <img src="{{ asset('storage/images/slides/'.$slide->image_path) }}" alt={{ $slide->id }}>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
 
                 <!-- Left and right controls -->
@@ -38,111 +46,53 @@
         <div class="col-lg-3">
             <div class="box-banner">
                 <div class="banners">
-                    <a href="#">
-                        <img src="{{asset('assets/img/brands/brand1.png')}}" class="img-responsive mt-3" width="150px" height="100px"/>
-                    </a>
-                    <a href="#">
-                        <img src="{{asset('assets/img/brands/brand2.png')}}" class="img-responsive mt-3" width="150px" height="100px"/>
-                    </a>
-                    <a href="#">
-                        <img src="{{asset('assets/img/brands/brand3.png')}}" class="img-responsive mt-3" width="150px" height="100px"/>
-                    </a>
+                    @foreach ($specialBrand as $brand)
+                        <a href="{{ route('brand.product',['id' => $brand->id]) }}">
+                            <img src="{{ asset('storage/images/brands/'.$brand->img_path) }}" class="img-responsive mt-3" width="150px" height="100px"/>
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
     <div class="banners-2 row mt-4 mb-4">
-        <div class="col-lg-4">
-            <a href="">
-                <img src="{{asset('assets/img/brands/brand4.png')}}" class="img-responsive" width="300px" height="150px"/>
-            </a>
-        </div>
-        <div class="col-lg-4">
-            <a href="">
-                <img src="{{asset('assets/img/brands/brand5.png')}}" class="img-responsive" width="300px" height="150px"/>
-            </a>
-        </div>
-        <div class="col-lg-4">
-            <a href="">
-                <img src="{{asset('assets/img/brands/brand6.png')}}" class="img-responsive" width="300px" height="150px"/>
-            </a>
-        </div>
+        @foreach ($brands as $brand)
+            <div class="col-lg-3">
+                <a href="{{ route('brand.product',['id' => $brand->id]) }}">
+                    <img src="{{ asset('storage/images/brands/'.$brand->img_path) }}" class="img-responsive" width="300px" height="150px"/>
+                </a>
+            </div>           
+        @endforeach
     </div>
-    <ul class="nav nav-tabs mb-4">
-        <li class="nav-item">
-            <a class="nav-link active text-dark" data-toggle="tab" href="#phukien">Phụ kiện Apple</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" data-toggle="tab" href="#manhinh">Dán màn hình</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" data-toggle="tab" href="#baoda">Bao da,ốp lưng</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" data-toggle="tab" href="#capsac">Cáp sạc</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" data-toggle="tab" href="#pin">Pin dự phòng</a>
-        </li>
-    </ul>
-    <div class="row mb-4" id="phukien">
-        <div class="col-lg-3">
-            <div class="product-item-box">
-                <div class="product-item">
-                    <div class="image">
-                        <a href="">
-                            <img src="{{asset('assets/img/products/phukien/phukien1.png')}}" alt="" width="100%" height="100%" name="product-image" class="product-image" />
-                        </a>
-                        <a href="" class="more-info"><i class="fas fa-search"></i> XEM THÊM</a>
-                    </div>
-                    <a href="" class="product-name mt-4">Tai nghe Bluetooth Apple AirPods 2 VN/A</a>
-                    <div class="price-new" name="price-new">3.400.000đ</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="product-item-box">
-                <div class="product-item">
-                    <div class="image">
-                        <a href="">
-                            <img src="{{asset('assets/img/products/phukien/phukien1.png')}}" alt="" width="100%" height="100%" name="product-image" class="product-image" />
-                        </a>
-                        <a href="" class="more-info"><i class="fas fa-search"></i> XEM THÊM</a>
-                    </div>
-                    <a href="" class="product-name mt-4">Tai nghe Bluetooth Apple AirPods 2 VN/A</a>
-                    <div class="price-new" name="price-new">3.400.000đ</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="product-item-box">
-                <div class="product-item">
-                    <div class="image">
-                        <a href="">
-                            <img src="{{asset('assets/img/products/phukien/phukien1.png')}}" alt="" width="100%" height="100%" name="product-image" class="product-image" />
-                        </a>
-                        <a href="" class="more-info"><i class="fas fa-search"></i> XEM THÊM</a>
-                    </div>
-                    <a href="" class="product-name mt-4">Tai nghe Bluetooth Apple AirPods 2 VN/A</a>
-                    <div class="price-new" name="price-new">3.400.000đ</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="product-item-box">
-                <div class="product-item">
-                    <div class="image">
-                        <a href="">
-                            <img src="{{asset('assets/img/products/phukien/phukien1.png')}}" alt="" width="100%" height="100%" name="product-image" class="product-image" />
-                        </a>
-                        <a href="" class="more-info"><i class="fas fa-search"></i> XEM THÊM</a>
-                    </div>
-                    <a href="" class="product-name mt-4">Tai nghe Bluetooth Apple AirPods 2 VN/A</a>
-                    <div class="price-new" name="price-new">3.400.000đ</div>
-                </div>
-            </div>
-        </div>
+    <h4>Sản phẩm</h4>
+    <div class="text-right mb-3">
+        <span>Sắp xếp </span><select class="form-select" id="form-select-filter">
+            <option value="0" selected>Mặc định</option>
+            <option value="1">Giá giảm dần</option>
+            <option value="2">Giá tăng dần</option>
+        </select>
     </div>
+    <div class="row mb-4">
+        @foreach ($products as $product)
+            <div class="col-lg-3 mb-4">
+                <div class="product-item-box">
+                    <div class="product-item">
+                        <div class="image">
+                            <a href="{{ route('product.detail',['id' => $product->id]) }}">
+                                <img src="{{ asset('storage/images/products/'.$product->image_path) }}" alt="{{ $product->id }}" width="100%" height="100%" name="product-image" class="product-image" />
+                            </a>
+                            <a href="{{ route('product.detail',['id' => $product->id]) }}" class="more-info"><i class="fas fa-search"></i> XEM THÊM</a>
+                        </div>
+                        <a href="{{ route('product.detail',['id' => $product->id]) }}" class="product-name mt-4">{{ $product->title }}</a>
+                        <div class="price-new" name="price-new">{{ number_format($product->price,-3,',',',') }}₫</div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    @if (count($products) >= 12)
+        {{ $products->links() }}
+    @endif
     <div class="row mb-4">
         <div class="col-lg-3">
             <div class="sale-policy-block">

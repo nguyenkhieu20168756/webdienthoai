@@ -14,9 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Redirect to each page
-Route::get('/', function () {
-    return view('index');
-})->name('index');
+Route::get('/',['uses'=>'HomeController@index','as'=>'index']);
+
+Route::get('product/brand/{id}',['uses'=>'HomeController@show','as'=>'brand.product']);
+
+Route::get('product/id/{id}',['uses'=>'ProductController@show','as'=>'product.detail']);
+
+Route::get('product/category/{id}',['uses'=>'CategoryController@show','as'=>'product.category']);
+
+Route::get('register',['uses'=>'CustomerSignUp@index','as'=>'register']);
+
+Route::post('register',['uses'=>'CustomerSignUp@index','as'=>'handle.register']);
+
+Route::get('login',['uses'=>'CustomerSignIn@index','as'=>'login']);
+
+Route::post('login',['uses'=>'CustomerSignIn@index','as'=>'handle.login']);
 
 Route::get('/introduce', function () {
     return view('introduce');
@@ -38,14 +50,6 @@ Route::get('/account', function () {
     return view('account');
 })->name('account');
 
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('register');
-})->name('register');
-
 Route::get('/resetpwd', function () {
     return view('resetpwd');
 })->name('resetpwd');
@@ -62,9 +66,6 @@ Route::get('/products', function () {
     return view('products');
 })->name('products');
 
-Route::get('/product-detail', function () {
-    return view('product-detail');
-})->name('product-detail');
 
 //Admin login
 Route::group(['prefix'=>'admin'],function(){
@@ -87,6 +88,10 @@ Route::group(['prefix'=>'admin'],function(){
         Route::get('disable/{id}',['uses'=>'CategoryController@disable','as'=>'category.disable']);
 
         Route::get('enable/{id}',['uses'=>'CategoryController@enable','as'=>'category.enable']);
+
+        Route::get('/back', function () {
+            return redirect()->route('category.list');
+        })->name('category.back');
     });
     // Slide
     Route::group(['prefix'=>'slide'],function(){
@@ -119,6 +124,10 @@ Route::group(['prefix'=>'admin'],function(){
         Route::post('add',['uses'=>'ArticleController@store','as'=>'article.add']);
         
         Route::get('delete/{id}',['uses'=>'ArticleController@destroy','as'=>'article.delete']);
+
+        Route::get('/back', function () {
+            return redirect()->route('article.list');
+        })->name('article.back');
     });
     // Promotion
     Route::group(['prefix'=>'promotion'],function(){
@@ -133,6 +142,10 @@ Route::group(['prefix'=>'admin'],function(){
         Route::post('add',['uses'=>'PromotionController@store','as'=>'promotion.add']);
         
         Route::get('delete/{id}',['uses'=>'PromotionController@destroy','as'=>'promotion.delete']);
+
+        Route::get('/back', function () {
+            return redirect()->route('promotion.list');
+        })->name('promotion.back');
     });
     // Comment
     Route::group(['prefix'=>'comment'],function(){
@@ -140,8 +153,6 @@ Route::group(['prefix'=>'admin'],function(){
         
         Route::get('edit/{id}',['uses'=>'CommentController@edit','as'=>'comment.edit.form']);
 
-		Route::post('edit/{id}',['uses'=>'CommentController@update','as'=>'comment.edit']);
-        
         Route::get('delete/{id}',['uses'=>'CommentController@destroy','as'=>'comment.delete']);
 	});
     // Order
@@ -153,6 +164,10 @@ Route::group(['prefix'=>'admin'],function(){
 		Route::post('edit/{id}',['uses'=>'OrderController@update','as'=>'order.edit']);
         
         Route::get('delete/{id}',['uses'=>'OrderController@destroy','as'=>'order.delete']);
+
+        Route::get('/back', function () {
+            return redirect()->route('order.list');
+        })->name('order.back');
 	});
     // Product
 	Route::group(['prefix'=>'product'],function(){
@@ -167,6 +182,14 @@ Route::group(['prefix'=>'admin'],function(){
         Route::post('add',['uses'=>'ProductController@store','as'=>'product.add']);
         
         Route::get('delete/{id}',['uses'=>'ProductController@destroy','as'=>'product.delete']);
+
+        Route::get('disable/{id}',['uses'=>'ProductController@disable','as'=>'product.disable']);
+
+        Route::get('enable/{id}',['uses'=>'ProductController@enable','as'=>'product.enable']);
+
+        Route::get('/back', function () {
+            return redirect()->route('product.list');
+        })->name('product.back');
     });
     // Producer
     Route::group(['prefix'=>'producer'],function(){
@@ -181,6 +204,10 @@ Route::group(['prefix'=>'admin'],function(){
         Route::post('add',['uses'=>'ProducerController@store','as'=>'producer.add']);
 
         Route::get('delete/{id}',['uses'=>'ProducerController@destroy','as'=>'producer.delete']);
+
+        Route::get('/back', function () {
+            return redirect()->route('producer.list');
+        })->name('producer.back');
 	});
     // Brand
     Route::group(['prefix'=>'brand'],function(){
@@ -199,6 +226,10 @@ Route::group(['prefix'=>'admin'],function(){
         Route::get('disable/{id}',['uses'=>'BrandController@disable','as'=>'brand.disable']);
 
         Route::get('enable/{id}',['uses'=>'BrandController@enable','as'=>'brand.enable']);
+
+        Route::get('/back', function () {
+            return redirect()->route('brand.list');
+        })->name('brand.back');
 	});
     // Customer
     Route::group(['prefix'=>'customer'],function(){
@@ -207,15 +238,15 @@ Route::group(['prefix'=>'admin'],function(){
         Route::get('edit/{id}',['uses'=>'CustomerController@edit','as'=>'customer.edit.form']);
 
 		Route::post('edit/{id}',['uses'=>'CustomerController@update','as'=>'customer.edit']);
-
-        Route::get('add',['uses'=>'CustomerController@create','as'=>'customer.add.form']);
-
-        Route::post('add',['uses'=>'CustomerController@store','as'=>'customer.add']);
         
         Route::get('delete/{id}',['uses'=>'CustomerController@destroy','as'=>'customer.delete']);
 
         Route::get('disable/{id}',['uses'=>'CustomerController@disable','as'=>'customer.disable']);
 
         Route::get('enable/{id}',['uses'=>'CustomerController@enable','as'=>'customer.enable']);
+
+        Route::get('/back', function () {
+            return redirect()->route('customer.list');
+        })->name('customer.back');
     });
 });

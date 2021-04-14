@@ -44,31 +44,43 @@
               <div class="heading-lg">
                    <h1>ĐĂNG KÝ TÀI KHOẢN</h1>
               </div>
+              @if(Session::has('invalid'))
+                    <div class="alert alert-danger alert-dismissible">
+                         <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                         {{Session::get('invalid')}}
+                    </div>
+               @endif
+               @if(Session::has('success'))
+                    <div class="alert alert-danger alert-success">
+                         <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                         {{Session::get('success')}}
+                    </div>
+               @endif
               <div class="form-checkout">
-                   <form action="" method="POST">
+                   <form action="{{ route('handle.register') }}" method="POST">
                         @csrf
                         <h2>THÔNG TIN TÀI KHOẢN</h2>
                         <div class="form-group">
                              <div class="row mr-auto ml-auto">
-                                  <label for="" class="col-sm-3">Tài khoản người dùng
+                                  <label for="username" class="col-sm-3">Tài khoản
                                        <span class="warning">(*)</span>
                                   </label>
                                   <input type="text" class="col-sm-9 form-control" name="username" required>
                              </div>
                              <div class="row mt-4 mr-auto ml-auto">
-                                  <label for="" class="col-sm-3">Email
+                                  <label for="email" class="col-sm-3">Email
                                        <span class="warning">(*)</span>
                                   </label>
                                   <input type="email" class="col-sm-9 form-control" name="email" required>
                              </div>
                              <div class="row mt-4 mr-auto ml-auto">
-                                  <label for="" class="col-sm-3">Mật khẩu
+                                  <label for="password" class="col-sm-3">Mật khẩu
                                        <span class="warning">(*)</span>
                                   </label>
                                   <input type="password" class="col-sm-9 form-control" name="password" required>
                              </div>
                              <div class="row mt-4 mr-auto ml-auto">
-                                  <label for="" class="col-sm-3 ">Nhập lại mật khẩu
+                                  <label for="repeatpassword" class="col-sm-3 ">Nhập lại mật khẩu
                                        <span class="warning">(*)</span>
                                   </label>
                                   <input type="password" class="col-sm-9 form-control" name="repeatpassword" required>
@@ -77,7 +89,7 @@
                         <h2>THÔNG TIN CÁ NHÂN</h2>
                         <div class="form-group">
                              <div class="row mt-4 mr-auto ml-auto">
-                                  <label for="" class="col-sm-3 col-12">Giới tính
+                                  <label for="sex" class="col-sm-3 col-12">Giới tính
                                        <span class="warning">(*)</span>
                                   </label>
                                   <select name="sex" id="sex" class="col-12 col-sm-9 form-control">
@@ -86,7 +98,7 @@
                                   </select>
                              </div>
                              <div class="row mt-4 mr-auto ml-auto">
-                                  <label for="" class="col-sm-3">Số điện thoại
+                                  <label for="phone" class="col-sm-3">Số điện thoại
                                        <span class="warning">(*)</span>
                                   </label>
                                   <input type="tel" class="col-sm-9 form-control" name="phone" required>
@@ -97,7 +109,9 @@
                                   </label>
                                   <select name="country" id="country" class="col-sm-9  form-control" required>
                                        <option value="">--Chọn tỉnh thành phố--</option>
-                                            <option></option>
+                                        @foreach ($cities as $city)
+                                             <option value="{{ $city->matp }}">{{ $city->name }}</option>
+                                        @endforeach
                                   </select>
                              </div>
                              <div class="row mt-4 mr-auto ml-auto">

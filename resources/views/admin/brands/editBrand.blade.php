@@ -18,6 +18,7 @@
                         <input type="text" class="form-control" placeholder="Nhập tên thương hiệu" id="brand-name" name="brand-name" value='{{ $brand['name'] }}' required>
                     </div>
                     <button type="submit" class="btn btn-primary">Sửa</button>
+                    <a href="{{ route('brand.back') }}" type="button" class="btn btn-danger">Quay lại</a>
                   </form>
             </div>
         </div>

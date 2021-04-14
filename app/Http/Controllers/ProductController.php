@@ -7,6 +7,7 @@ use App\Product;
 use App\Category;
 use App\Producer;
 use App\Brand;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -17,7 +18,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = DB::select(
+        'select p.*,c.title cate_title,b.name brand_name,r.name producer_name from products p,categories c,brands b,producers r
+         where p.category_id = c.id and p.brand_id = b.id and p.producer_id = r.id'
+        );
         return view('admin.products.listProduct',['products'=>$products]);
     }
 
@@ -54,7 +58,8 @@ class ProductController extends Controller
                     'producer_id' => 'required',
                     'brand_id' => 'required',
                     'image' => 'mimes:jpeg,png,webp|max:1014',
-                    'quantity' => 'required'
+                    'quantity' => 'required',
+                    'sku' => 'required'
                 ]);
                 $extension = $request->image->extension();
                 $request->image->storeAs('/public/images/products', $validated['title'].".".$extension);
@@ -66,10 +71,11 @@ class ProductController extends Controller
                    'producer_id' => $validated['producer_id'],
                    'description' => $validated['content'],
                    'brand_id' => $validated['brand_id'],
-                   'quantity' => $validated['quantity']
+                   'quantity' => $validated['quantity'],
+                   'sku' => $validated['sku']
                 ]);
                 $product->save();
-                return redirect()->route('product.list');
+                return redirect()->route('product.list')->with("success","Lưu thành công");
             }
         }
     }
@@ -82,7 +88,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        $randomProduct = Product::inRandomOrder()->limit(1)->get();
+        return view('product-detail',['product'=>$product,'randomProduct'=>$randomProduct]);
     }
 
     /**
@@ -93,8 +101,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $categories = Category::all();
+        $producers = Producer::all();
+        $brands = Brand::all();
         $product = Product::find($id);
-        return view('admin.products.editProduct',['product' => $product]);
+        return view('admin.products.editProduct',['product' => $product,'categories'=>$categories,'producers' => $producers,'brands' => $brands]);
     }
 
     /**
@@ -108,15 +119,16 @@ class ProductController extends Controller
     {
         
         $product = Product::find($id);
-        $product->title = $request->input('product-name');
+        $product->title = $request->input('title');
         $product->price = $request->input('price');
         $product->category_id = $request->input('category_id');
         $product->producer_id = $request->input('producer_id');
         $product->brand_id = $request->input('brand_id');
-        $product->description = $request->input('description');
+        $product->description = $request->input('content');
         $product->quantity = $request->input('quantity');
+        $product->sku = $request->input('sku');
         $product->save();
-        return redirect()->route('product.list');
+        return redirect()->route('product.list')->with("success","Sửa thành công");
     }
 
     /**
@@ -129,6 +141,6 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product->delete();
-        return redirect()->route('product.list');
+        return redirect()->route('product.list')->with("success","Xóa thành công");
     }
 }

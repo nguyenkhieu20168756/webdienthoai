@@ -18,6 +18,7 @@
                         <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp" id="producer-name" name="producer-name" value='{{ $producer['name'] }}'>
                     </div>
                     <button type="submit" class="btn btn-primary">Sửa</button>
+                    <a href="{{ route('producer.back') }}" type="button" class="btn btn-danger">Quay lại</a>
                   </form>
             </div>
         </div>
