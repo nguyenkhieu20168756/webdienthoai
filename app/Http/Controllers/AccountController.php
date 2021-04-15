@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class AccountController extends Controller
 {
@@ -84,5 +85,16 @@ class AccountController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Logout account
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function logout()
+    {
+        Session::forget('customer');
+        return redirect()->route('login')->with('success','Đăng xuất thành công.');
     }
 }

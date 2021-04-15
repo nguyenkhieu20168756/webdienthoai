@@ -48,6 +48,8 @@ Route::get('account',['uses'=>'AccountController@index','as'=>'account']);
 
 Route::post('account',['uses'=>'AccountController@update','as'=>'handle.edit']);
 
+Route::get('logout',['uses'=>'AccountController@logout','as'=>'logout']);
+
 Route::get('/introduce', function () {
     return view('introduce');
 })->name('introduce');

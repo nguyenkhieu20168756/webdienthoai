@@ -39,7 +39,7 @@
                               </a>
                          </li>
                          <li>
-                              <a href="">
+                              <a href="{{ route('logout') }}">
                                    <i class="fas fa-sign-in-alt"></i>
                                    Thoát
                               </a>
