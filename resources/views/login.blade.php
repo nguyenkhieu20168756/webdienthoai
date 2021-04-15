@@ -44,12 +44,6 @@
               <div class="heading-lg">
                    <h1>ĐĂNG NHẬP HỆ THỐNG</h1>
               </div>
-              @if(Session::has('invalid'))
-                    <div class="alert alert-danger alert-dismissible mt-2">
-                         <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                         {{Session::get('invalid')}}
-                    </div>
-               @endif
                @if(Session::has('success'))
                     <div class="alert alert-success alert-dismissible mt-2">
                          <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -57,11 +51,17 @@
                     </div>
                @endif
               <form class="form-horizontal mt-4" action="{{ route('handle.login') }}" method="POST" enctype="multipart/form-data">
+                    @if(Session::has('invalid'))
+                         <div class="alert alert-danger alert-dismissible mt-2">
+                              <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                              {{Session::get('invalid')}}
+                         </div>
+                    @endif
                     @csrf
                    <div class="form-group">
                         <label class="control-label col-sm-2" for="username">Email:</label>
                         <div class="col-sm-10">
-                             <input type="text" class="form-control" name="email" id="email" placeholder="Nhập email">
+                             <input type="email" class="form-control" name="email" id="email" placeholder="Nhập email">
                         </div>
                    </div>
                    <div class="form-group">

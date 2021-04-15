@@ -95,6 +95,7 @@ class VerifyMailController extends Controller
         }else{
             Session::put('customer',$customer);
         }
+        // Đăng nhập
         Auth::loginUsingId($customer->id);
         return redirect()->route('account')->with('success','Đăng nhập thành công.');
     }

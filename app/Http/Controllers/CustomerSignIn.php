@@ -57,11 +57,11 @@ class CustomerSignIn extends Controller
                 }
                 return redirect()->route('account')->with('success','Đăng nhập thành công.');
             }else{
-                return back()->with("invalid","Vui lòng xác thực tài khoản trước khi đăng nhập !");
+                return redirect()->route('login')->with("invalid","Vui lòng xác thực tài khoản trước khi đăng nhập !");
             }
         }
         else{
-            return back()->with("invalid","Tài khoản hoặc mật khẩu không đúng. Vui lòng đăng nhập lại !");
+            return redirect()->route('login')->with("invalid","Tài khoản hoặc mật khẩu không đúng. Vui lòng đăng nhập lại !");
         }
     }
 
