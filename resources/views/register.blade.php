@@ -45,19 +45,19 @@
                    <h1>ĐĂNG KÝ TÀI KHOẢN</h1>
               </div>
               @if(Session::has('invalid'))
-                    <div class="alert alert-danger alert-dismissible">
+                    <div class="alert alert-danger alert-dismissible mt-2">
                          <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
                          {{Session::get('invalid')}}
                     </div>
                @endif
                @if(Session::has('success'))
-                    <div class="alert alert-danger alert-success">
+                    <div class="alert alert-success alert-dismissible mt-2">
                          <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
                          {{Session::get('success')}}
                     </div>
                @endif
               <div class="form-checkout">
-                   <form action="{{ route('handle.register') }}" method="POST">
+                   <form action="{{ route('handle.register') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <h2>THÔNG TIN TÀI KHOẢN</h2>
                         <div class="form-group">

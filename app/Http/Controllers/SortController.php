@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-
-class HomeController extends Controller
+class SortController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,19 +14,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $slides = DB::table('slides')->where('status','=',1)->orderBy('sort_order')->get();
-        $slideFirst = DB::table('slides')->where('status','=',1)->first();
-        $specialBrand = DB::table('brands')->where('status','=',1)->limit(3)->get();
-        $brands = DB::table('brands')->where('status','=',1)->get();
-        $products = DB::table('products')->where('status','=',1)->paginate(12);
-        return view('index',
-        [
-            'slides' => $slides,
-            'slideFirst' => $slideFirst->id,
-            'specialBrand' => $specialBrand,
-            'brands' => $brands,
-            'products' => $products
-        ]);
+        if($_GET['choose'] == "1"){
+            $msg = DB::table('products')->where('status','=',1)->orderBy('price', 'DESC')->paginate(12);
+        }elseif($_GET['choose'] == "2"){
+            $msg = DB::table('products')->where('status','=',1)->orderBy('id', 'ASC')->paginate(12);
+        }else{
+            $msg = DB::table('products')->where('status','=',1)->paginate(12);
+        }
+        return response()->json($msg);
     }
 
     /**
@@ -95,5 +89,4 @@ class HomeController extends Controller
     {
         //
     }
-
 }

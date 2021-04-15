@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Customer;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyMail;
 
 class CustomerSignUp extends Controller
 {
@@ -37,6 +39,8 @@ class CustomerSignUp extends Controller
      */
     public function store(Request $request)
     {
+        $customers = Customer::all();
+        $cities = DB::select('select * from cities');
         // Form validation
         $validated = $request->validate([
             'username' => 'required',
@@ -50,6 +54,11 @@ class CustomerSignUp extends Controller
             'ward' => 'required'
         ]);
         if($validated['password'] === $validated['repeatpassword']){
+            foreach($customers as $item){
+                if($item['email'] === $request->input('email')){
+                    return redirect()->route('register')->with(["invalid" => "Email này đã tồn tại. Vui lòng đăng ký lại","cities" => $cities]);
+                }
+            }
             //  Store data in database
             $customer = new Customer([
                 'username' => $request->input('username'),
@@ -62,9 +71,10 @@ class CustomerSignUp extends Controller
                 'ward_id' => $request->input('ward')
             ]);
             $customer->save();
-            return view('login')->with("success", "Đăng ký thành công! Mời bạn xác thực mail để đăng nhập vào tài khoản");
+            Mail::to($request->input('email'))->send(new VerifyMail($customer));
+            return redirect()->route('login')->with("success", "Đăng ký thành công! Mời bạn xác thực mail để đăng nhập vào tài khoản");
         }else{
-            return view('register')->with("invalid", "Mật khẩu và mật khẩu xác nhận phải trùng nhau");
+            return redirect()->route('register')->with(["invalid" => "Mật khẩu và mật khẩu xác nhận phải trùng nhau","cities" => $cities]);
         }
     }
 

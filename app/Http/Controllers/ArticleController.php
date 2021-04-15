@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Article;
+use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
@@ -60,7 +61,8 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        $article= Article::find($id);
+        return view('article-detail',['article'=>$article]);
     }
 
     /**
@@ -103,5 +105,16 @@ class ArticleController extends Controller
         $article = Article::find($id);
         $article->delete();
         return redirect()->route('article.list')->with("success","Xóa thành công");
+    }
+
+    /**
+     * Display a listing of the resource in front end
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showArticle()
+    {
+        $articles = DB::table('articles')->orderBy('sort_order')->get();
+        return view('article',['articles'=>$articles]);
     }
 }

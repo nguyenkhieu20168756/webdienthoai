@@ -9,49 +9,40 @@
             <div class="menu-news">
                 <h5 class="new-title">SẢN PHẨM</h5>
                 <ul>
-                    <li><i class="fas fa-arrow-circle-right"></i> <a href="">Phụ kiện Apple</a></li>
-                    <hr />
-                    <li><i class="fas fa-arrow-circle-right"></i> <a href="">Dán màn hình</a></li>
-                    <hr />
-                    <li><i class="fas fa-arrow-circle-right"></i> <a href="">Bao da,ốp lưng</a></li>
-                    <hr />
-                    <li><i class="fas fa-arrow-circle-right"></i> <a href="">Cáp sạc</a></li>
-                    <hr />
-                    <li><i class="fas fa-arrow-circle-right"></i> <a href="">Pin dự phòng</a></li>
+                    @foreach ($categories as $category)
+                        <li><i class="fas fa-arrow-circle-right"></i> <a href="{{ route('product.category',['id' => $category->id]) }}">{{ $category->title }}</a></li>
+                        <hr />
+                    @endforeach
                 </ul>
             </div>
         </div>
         <div class="col-lg-9 col-md-12">
             <div class="row ml-4">
-                <div class="col-md-3 mb-4">
-                    <form action="" method="POST">
-                        @csrf
-                        {{-- <div class="product-item-box">
-                            <div class="product-item">
-                                <div class="image-search">
-                                    <a href="">
-                                        <img src="" alt="" width="100%"
-                                            height="100%" name="product-image" class="product-image" />
-                                    </a>
-                                    <a href="" class="more-info-search"><i
-                                            class="fas fa-search"></i> XEM THÊM</a>
-                                </div>
-                                <a href=""
-                                    class="product-name-search mt-4"></a>
-                                <div class="price-new" name="price-new">
-                                    
+                @foreach ($products as $product)
+                    <div class="col-lg-3 mb-4">
+                        <form action="" method="POST">
+                            @csrf
+                            <div class="product-item-box">
+                                <div class="product-item">
+                                    <div class="image">
+                                        <a href="{{ route('product.detail',['id' => $product->id]) }}">
+                                            <img src="{{ asset('storage/images/products/'.$product->image_path) }}" alt="{{ $product->id }}" width="100%" height="100%" name="product-image" class="product-image" />
+                                        </a>
+                                        <a href="{{ route('product.detail',['id' => $product->id]) }}" class="more-info"><i class="fas fa-search"></i> XEM THÊM</a>
+                                    </div>
+                                    <a href="{{ route('product.detail',['id' => $product->id]) }}" class="product-name mt-4">{{ $product->title }}</a>
+                                    <div class="price-new" name="price-new">{{ number_format($product->price,-3,',',',') }} VND</div>
                                 </div>
                             </div>
-                        </div>
-                        <input type="hidden" name="price" value="" />
-                        <input type="hidden" name="title" value="" />
-                        <input type="hidden" name="quantity" value="" />
-                        <div class="col text-center">
-                            <button type="submit" class="buy" name="buy"><i class="fas fa-shopping-cart"></i>
-                                Mua</button>
-                        </div> --}}
-                    </form>
-                </div>
+                            <input type="hidden" name="product_id" value="{{ $product->id }}" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <div class="col text-center">
+                                <button type="submit" class="buy" name="buy"><i class="fas fa-shopping-cart"></i>
+                                    Mua</button>
+                            </div>
+                        </form>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>

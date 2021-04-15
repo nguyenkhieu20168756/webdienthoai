@@ -46,7 +46,7 @@
                 <div class="col-md-6 describe">
                     <h2 class="ng-binding">{{ $product['name'] }}</h2>
                     <div class="price">
-                        <span class="price-new ng-binding">Giá: {{ number_format($product['price'],-3,',',',') }}₫</span>
+                        <span class="price-new ng-binding">Giá: {{ number_format($product['price'],-3,',',',') }} VND</span>
                     </div>
                     <span class="product-code ng-binding d-block mb-2"><b>Mã SP:</b> {{ $product['sku'] }} </span>
                     <form class="add-to-cart">
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                             <div class="price text-center">
-                                <span class="price-new">{{ number_format($item['price'],-3,',',',') }}₫</span>
+                                <span class="price-new">{{ number_format($item['price'],-3,',',',') }} VND</span>
                             </div>
                             <form class="add-to-cart" action="" method="POST">
                                 <div class="col text-center">

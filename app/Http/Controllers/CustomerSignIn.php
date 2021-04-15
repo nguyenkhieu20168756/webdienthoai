@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Customer;
 
 class CustomerSignIn extends Controller
 {
@@ -27,14 +30,39 @@ class CustomerSignIn extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Login account
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function login(Request $request)
     {
-        //
+         // Form validation
+         $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if(($request->input('email') == 'admin@gmail.com' && $request->input('password') == 'admin123')){
+            return redirect()->route('dashboard')->with('success','Đăng nhập thành công vào admin.');
+        }
+        elseif(Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])){
+            $customer = Customer::where([['email','=',$request->input('email')],['verify','=',1]])->first();
+            if(!empty($customer->id)){
+                if(Session::has('customer')){
+                    Session::forget('customer');
+                    Session::put('customer',$customer);
+                }else{
+                    Session::put('customer',$customer);
+                }
+                return redirect()->route('account')->with('success','Đăng nhập thành công.');
+            }else{
+                return back()->with("invalid","Vui lòng xác thực tài khoản trước khi đăng nhập !");
+            }
+        }
+        else{
+            return back()->with("invalid","Tài khoản hoặc mật khẩu không đúng. Vui lòng đăng nhập lại !");
+        }
     }
 
     /**

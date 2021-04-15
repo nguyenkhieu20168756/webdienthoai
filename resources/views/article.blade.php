@@ -12,16 +12,18 @@
         </div>
         <div class="news-content">
             <div classs="news-block">
-                <div class="news-item">
-                    <div class="row">
-                        <div class="col-lg-12 title-news">
-                            <h4><a href=""></a></h4>
-                            <small></small>
-                            <p class="text-justify"></p>
+                @foreach ($articles as $article)
+                    <div class="news-item">
+                        <div class="row">
+                            <div class="col-lg-12 title-news">
+                                <h4><a class="text-dark" href="{{ route('article.detail',['id' => $article->id]) }}">{{ $article->title }}</a></h4>
+                                <small>Đăng lúc {{ $article->created_at }}</small>
+                                <p class="text-justify"></p>
+                            </div>  
                         </div>
                     </div>
-                </div>
-            <hr>
+                    <hr>
+                @endforeach
         </div>
     </div>
 </div>

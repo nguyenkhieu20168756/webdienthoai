@@ -45,29 +45,29 @@
                    <h1>ĐĂNG NHẬP HỆ THỐNG</h1>
               </div>
               @if(Session::has('invalid'))
-                    <div class="alert alert-danger alert-dismissible">
+                    <div class="alert alert-danger alert-dismissible mt-2">
                          <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
                          {{Session::get('invalid')}}
                     </div>
                @endif
                @if(Session::has('success'))
-                    <div class="alert alert-danger alert-success">
+                    <div class="alert alert-success alert-dismissible mt-2">
                          <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
                          {{Session::get('success')}}
                     </div>
                @endif
-              <form class="form-horizontal mt-4" action="" method="POST">
+              <form class="form-horizontal mt-4" action="{{ route('handle.login') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="username">Tài khoản người dùng:</label>
+                        <label class="control-label col-sm-2" for="username">Email:</label>
                         <div class="col-sm-10">
-                             <input type="text" class="form-control" name="username" id="username" placeholder="Nhập username">
+                             <input type="text" class="form-control" name="email" id="email" placeholder="Nhập email">
                         </div>
                    </div>
                    <div class="form-group">
                         <label class="control-label col-sm-2" for="password">Mật khẩu:</label>
                         <div class="col-sm-10">
-                             <input type="password" class="form-control" id="password" name="password" placeholder="Nhập password">
+                             <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu">
                              <a href="{{  route('resetpwd') }}">Quên mật khẩu</a>
                         </div>
                    </div>

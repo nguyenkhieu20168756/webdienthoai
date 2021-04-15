@@ -5,29 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-
-class HomeController extends Controller
+class SearchController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * 
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $slides = DB::table('slides')->where('status','=',1)->orderBy('sort_order')->get();
-        $slideFirst = DB::table('slides')->where('status','=',1)->first();
-        $specialBrand = DB::table('brands')->where('status','=',1)->limit(3)->get();
-        $brands = DB::table('brands')->where('status','=',1)->get();
-        $products = DB::table('products')->where('status','=',1)->paginate(12);
-        return view('index',
-        [
-            'slides' => $slides,
-            'slideFirst' => $slideFirst->id,
-            'specialBrand' => $specialBrand,
-            'brands' => $brands,
-            'products' => $products
-        ]);
+        $q = $request->input('q');
+        $products = DB::table('products')->where([['status','=',1],['title','like','%'.$q.'%']])->paginate(12);
+        $categories = DB::table('categories')->where('status','=',1)->get();
+        return view('search',['products' => $products,'categories' => $categories]);
     }
 
     /**
@@ -95,5 +86,4 @@ class HomeController extends Controller
     {
         //
     }
-
 }

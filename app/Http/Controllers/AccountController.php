@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-
-class HomeController extends Controller
+class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,19 +14,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $slides = DB::table('slides')->where('status','=',1)->orderBy('sort_order')->get();
-        $slideFirst = DB::table('slides')->where('status','=',1)->first();
-        $specialBrand = DB::table('brands')->where('status','=',1)->limit(3)->get();
-        $brands = DB::table('brands')->where('status','=',1)->get();
-        $products = DB::table('products')->where('status','=',1)->paginate(12);
-        return view('index',
-        [
-            'slides' => $slides,
-            'slideFirst' => $slideFirst->id,
-            'specialBrand' => $specialBrand,
-            'brands' => $brands,
-            'products' => $products
-        ]);
+        $cities = DB::select('select * from cities');
+        $districts = DB::select('select * from districts');
+        $wards = DB::select('select * from wards');
+        return view('account',['cities' => $cities,'districts' => $districts,'wards' => $wards]);
     }
 
     /**
@@ -95,5 +85,4 @@ class HomeController extends Controller
     {
         //
     }
-
 }

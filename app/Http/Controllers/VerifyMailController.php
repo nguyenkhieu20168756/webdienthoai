@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Customer;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
-
-class HomeController extends Controller
+class VerifyMailController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,19 +16,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $slides = DB::table('slides')->where('status','=',1)->orderBy('sort_order')->get();
-        $slideFirst = DB::table('slides')->where('status','=',1)->first();
-        $specialBrand = DB::table('brands')->where('status','=',1)->limit(3)->get();
-        $brands = DB::table('brands')->where('status','=',1)->get();
-        $products = DB::table('products')->where('status','=',1)->paginate(12);
-        return view('index',
-        [
-            'slides' => $slides,
-            'slideFirst' => $slideFirst->id,
-            'specialBrand' => $specialBrand,
-            'brands' => $brands,
-            'products' => $products
-        ]);
+        //
     }
 
     /**
@@ -52,14 +41,14 @@ class HomeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Verify mail
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -96,4 +85,17 @@ class HomeController extends Controller
         //
     }
 
+    public function verify($mail)
+    {
+        $customer = Customer::whereEmail($mail)->first();
+        Customer::where('email',$mail)->update(['verify' => 1]);
+        if(Session::has('customer')){
+            Session::forget('customer');
+            Session::put('customer',$customer);
+        }else{
+            Session::put('customer',$customer);
+        }
+        Auth::loginUsingId($customer->id);
+        return redirect()->route('account')->with('success','Đăng nhập thành công.');
+    }
 }

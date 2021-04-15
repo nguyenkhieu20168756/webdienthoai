@@ -24,31 +24,38 @@ Route::get('product/category/{id}',['uses'=>'CategoryController@show','as'=>'pro
 
 Route::get('register',['uses'=>'CustomerSignUp@index','as'=>'register']);
 
-Route::post('register',['uses'=>'CustomerSignUp@index','as'=>'handle.register']);
+Route::post('register',['uses'=>'CustomerSignUp@store','as'=>'handle.register']);
 
 Route::get('login',['uses'=>'CustomerSignIn@index','as'=>'login']);
 
-Route::post('login',['uses'=>'CustomerSignIn@index','as'=>'handle.login']);
+Route::post('login',['uses'=>'CustomerSignIn@login','as'=>'handle.login']);
+
+Route::get('district',['uses'=>'DistrictController@index']);
+
+Route::get('ward',['uses'=>'WardController@index']);
+
+Route::get('sort',['uses'=>'SortController@index']);
+
+Route::get('article',['uses'=>'ArticleController@showArticle','as'=>'article']);
+
+Route::get('article/id/{id}',['uses'=>'ArticleController@show','as'=>'article.detail']);
+
+Route::post('search',['uses'=>'SearchController@index','as'=>'search.product']);
+
+Route::get('/verify/{mail}','VerifyMailController@verify');
+
+Route::get('account',['uses'=>'AccountController@index','as'=>'account']);
+
+Route::post('account',['uses'=>'AccountController@update','as'=>'handle.edit']);
 
 Route::get('/introduce', function () {
     return view('introduce');
 })->name('introduce');
 
-Route::get('/products', function () {
-    return view('products');
-})->name('products');
-
-Route::get('/article', function () {
-    return view('article');
-})->name('article');
-
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-Route::get('/account', function () {
-    return view('account');
-})->name('account');
 
 Route::get('/resetpwd', function () {
     return view('resetpwd');

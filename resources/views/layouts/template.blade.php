@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
 	<!-- Css -->
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}" media="all" />
 	<!-- Fontawesome -->
@@ -34,10 +35,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-phone-alt"></i> Hotline:0898 10 3236</a></li>
-						<li class="nav-item"><a href="{{  route('account') }}"  class="nav-link"><i class="far fa-edit"></i>Tài Khoản</a></li>
-						<li class="nav-item"><a href=""  class="nav-link"><i class="fas fa-sign-out-alt"></i> Đăng Xuất</a></li>
-						<li class="nav-item"><a href="{{  route('login') }}"  class="nav-link"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
-						<li class="nav-item"><a href="{{  route('register') }}"  class="nav-link"><i class="fas fa-key"></i> Đăng ký</a></li>
+						@if (!empty(Session::get('customer')->id))
+							<li class="nav-item"><a href="{{  route('account') }}"  class="nav-link"><i class="far fa-edit"></i>{{ Session::get('customer')->email }}</a></li>
+						@else
+							<li class="nav-item"><a href="{{  route('login') }}"  class="nav-link"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+							<li class="nav-item"><a href="{{  route('register') }}"  class="nav-link"><i class="fas fa-key"></i> Đăng ký</a></li>
+						@endif
                     </ul>
                 </div>
             </div>
@@ -47,7 +50,7 @@
                 <h1 style="font-family: 'Exo 2', sans-serif; color: gray">ACCESSORIES
                 <span style="color: #f46164">STORE</span></h1>
             </a>
-            <form method="POST" action="" class="form-search" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('search.product') }}" class="form-search" enctype="multipart/form-data">
 				@csrf
                 <div class="form-group d-flex">
                     <input type="text" placeholder="Tìm kiếm..." class="search-text-box" name="q" />
