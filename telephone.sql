@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2021 at 04:12 PM
+-- Generation Time: Apr 15, 2021 at 05:06 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -36,6 +36,13 @@ CREATE TABLE `articles` (
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `articles`
+--
+
+INSERT INTO `articles` (`id`, `title`, `content`, `created_at`, `sort_order`, `updated_at`) VALUES
+(8, 'abc', '<p>abc</p>', '2021-04-12 18:46:30', 1, '2021-04-13 01:46:30');
+
 -- --------------------------------------------------------
 
 --
@@ -57,7 +64,9 @@ CREATE TABLE `brands` (
 
 INSERT INTO `brands` (`id`, `name`, `img_path`, `status`, `created_at`, `updated_at`) VALUES
 (3, 'Apple', 'Apple.jpg', 1, '2021-04-12 00:06:24', '2021-04-12 07:06:24'),
-(4, 'Oppo', 'Oppo.jpg', 1, '2021-04-12 00:13:51', '2021-04-12 07:13:51');
+(4, 'Oppo', 'Oppo.jpg', 1, '2021-04-12 00:13:51', '2021-04-12 07:13:51'),
+(5, 'Samsung', 'Samsung.jpg', 1, '2021-04-13 01:08:03', '2021-04-13 08:08:03'),
+(6, 'Lenovo', 'Lenovo.jpg', 1, '2021-04-13 01:08:29', '2021-04-13 08:08:29');
 
 -- --------------------------------------------------------
 
@@ -180,6 +189,22 @@ CREATE TABLE `comments` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `contacts`
+--
+
+CREATE TABLE `contacts` (
+  `id` bigint(20) NOT NULL,
+  `address` text DEFAULT NULL,
+  `email` varchar(30) NOT NULL,
+  `phone` varchar(10) NOT NULL,
+  `title` text NOT NULL,
+  `content` text NOT NULL,
+  `customer_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customers`
 --
 
@@ -196,8 +221,16 @@ CREATE TABLE `customers` (
   `admin` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `status` tinyint(1) DEFAULT 1
+  `status` tinyint(1) DEFAULT 1,
+  `verify` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`id`, `username`, `password`, `email`, `phone`, `sex`, `city_id`, `district_id`, `ward_id`, `admin`, `created_at`, `updated_at`, `status`, `verify`) VALUES
+(12, 'hyquynh', '$2y$10$sRvQ8O.joI9ppr2FcJz5Ru4V5qMe0GaDwQgaYeuEQg9oTPFV5bl6G', 'hyquynh123@gmail.com', '0123456789', 'female', '02', '028', '00862', 0, '2021-04-14 18:24:49', '2021-04-15 01:58:21', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -904,8 +937,20 @@ CREATE TABLE `products` (
   `description` text DEFAULT NULL,
   `brand_id` bigint(20) NOT NULL,
   `quantity` int(255) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT 1
+  `status` tinyint(1) DEFAULT 1,
+  `sku` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `title`, `price`, `category_id`, `image_path`, `created_at`, `updated_at`, `producer_id`, `description`, `brand_id`, `quantity`, `status`, `sku`) VALUES
+(1, 'abc', 10000, 2, 'abc.jpg', '2021-04-12 18:53:19', '2021-04-14 01:34:58', 1, '<p><u><em><strong>abc</strong></em></u></p>', 3, 100, 1, 'abc'),
+(2, 'def', 20000, 3, 'def.webp', '2021-04-13 00:48:14', '2021-04-14 01:37:46', 1, '<p><strong>def</strong></p>', 4, 100, 1, 'def'),
+(3, 'ghj', 20000, 3, 'ghj.jpg', '2021-04-13 01:34:06', '2021-04-14 01:38:08', 1, '<p>ghj</p>', 5, 400, 1, 'ghj'),
+(4, 'klz', 20000, 2, 'klz.jpg', '2021-04-13 01:34:36', '2021-04-14 01:38:21', 1, '<p>klz</p>', 4, 100, 1, 'klz'),
+(5, 'xyz', 20000, 3, 'xyz.jpg', '2021-04-13 01:58:12', '2021-04-14 01:40:22', 1, '<p>xyz</p>', 5, 100, 1, 'xyz');
 
 -- --------------------------------------------------------
 
@@ -922,6 +967,13 @@ CREATE TABLE `promotions` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `promotions`
+--
+
+INSERT INTO `promotions` (`id`, `title`, `code`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
+(3, 'Sale 10%', '#welcome', 10000, 100, '2021-04-12 18:43:29', '2021-04-13 01:43:29');
 
 -- --------------------------------------------------------
 
@@ -944,7 +996,9 @@ CREATE TABLE `slides` (
 --
 
 INSERT INTO `slides` (`id`, `name`, `image_path`, `sort_order`, `created_at`, `updated_at`, `status`) VALUES
-(1, 'Slide 1', 'Slide 1.webp', 1, '2021-04-12 01:51:17', '2021-04-12 08:51:17', 1);
+(1, 'Slide 1', 'Slide 1.webp', 1, '2021-04-12 01:51:17', '2021-04-14 02:54:59', 1),
+(2, 'Slide 2', 'Slide 2.webp', 3, '2021-04-12 21:06:15', '2021-04-14 02:54:51', 1),
+(3, 'Slide 3', 'Slide 3.webp', 2, '2021-04-12 21:06:30', '2021-04-13 04:06:30', 1);
 
 -- --------------------------------------------------------
 
@@ -11624,6 +11678,13 @@ ALTER TABLE `comments`
   ADD KEY `FK_ProductComment` (`product_id`);
 
 --
+-- Indexes for table `contacts`
+--
+ALTER TABLE `contacts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_CustomerContact` (`customer_id`);
+
+--
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
@@ -11687,13 +11748,13 @@ ALTER TABLE `wards`
 -- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -11708,10 +11769,16 @@ ALTER TABLE `comments`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `contacts`
+--
+ALTER TABLE `contacts`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -11729,19 +11796,19 @@ ALTER TABLE `producers`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `slides`
 --
 ALTER TABLE `slides`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -11753,6 +11820,12 @@ ALTER TABLE `slides`
 ALTER TABLE `comments`
   ADD CONSTRAINT `FK_CustomerComment` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   ADD CONSTRAINT `FK_ProductComment` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `contacts`
+--
+ALTER TABLE `contacts`
+  ADD CONSTRAINT `FK_CustomerContact` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`);
 
 --
 -- Constraints for table `customers`
