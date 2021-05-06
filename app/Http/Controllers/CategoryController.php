@@ -57,7 +57,10 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $products = DB::select('select * from products where category_id = :id', ['id' => $id]);
+        $categories = DB::table('categories')->where('status','=',1)->get();
+        $category = Category::find($id);
+        return view('product-category',['products' => $products,'categories' => $categories,'category' => $category]);
     }
 
     /**

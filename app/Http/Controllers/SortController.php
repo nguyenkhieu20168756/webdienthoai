@@ -17,7 +17,7 @@ class SortController extends Controller
         if($_GET['choose'] == "1"){
             $msg = DB::table('products')->where('status','=',1)->orderBy('price', 'DESC')->paginate(12);
         }elseif($_GET['choose'] == "2"){
-            $msg = DB::table('products')->where('status','=',1)->orderBy('id', 'ASC')->paginate(12);
+            $msg = DB::table('products')->where('status','=',1)->orderBy('price', 'ASC')->paginate(12);
         }else{
             $msg = DB::table('products')->where('status','=',1)->paginate(12);
         }

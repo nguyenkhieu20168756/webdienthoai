@@ -60,7 +60,9 @@
             <div class="cart">
                 <a href="{{ route('cart') }}" class="text-dark cart-child">
                     <img src="{{asset('assets/img/cart/cart.png')}}" alt="cart" />
-                    <span id="cart-total" class="cart-total ml-2 mr-2 mt-2"></span>
+                    <span id="cart-total" class="cart-total ml-2 mr-2 mt-2">
+						{{ Session::has('cart') ? Session::get('cart')->totalQty : '' }}
+					</span>
                     <i class="fa fa-arrow-right mt-2"></i>
                 </a>
             </div>
@@ -75,7 +77,6 @@
                     <ul class="navbar-nav">
                         <li class="nav-item"><a href="{{  route('index') }}" class="nav-link">TRANG CHỦ</a></li>
                         <li class="nav-item"><a href="{{  route('introduce') }}" class="nav-link">GIỚI THIỆU</a></li>
-                        <li class="nav-item"><a href="{{  route('products') }}" class="nav-link">PHỤ KIỆN</a></li>
                         <li class="nav-item"><a href="{{  route('article') }}" class="nav-link">BÀI VIẾT</a></li>
                         <li class="nav-item"><a href="{{  route('contact') }}" class="nav-link">LIÊN HỆ</a></li>
 						<div class="dropdown">
@@ -119,21 +120,21 @@
 					<div class="col-lg-3">
 						<h6>GIỚI THIỆU</h6>
 						<div class="items">
-							<a href=""><i class="fas fa-angle-double-right"></i> Về chúng tôi</a>
-							<a href=""><i class="fas fa-angle-double-right"></i> Lĩnh vực hoạt động</a>
-							<a href=""><i class="fas fa-angle-double-right"></i> Hỏi đáp</a>
-							<a href=""><i class="fas fa-angle-double-right"></i> Quy chế hoạt động</a>
-							<a href=""><i class="fas fa-angle-double-right"></i> Tuyển dụng</a>
+							<div><i class="fas fa-angle-double-right"></i> Về chúng tôi</div>
+							<div><i class="fas fa-angle-double-right"></i> Lĩnh vực hoạt động</div>
+							<div><i class="fas fa-angle-double-right"></i> Hỏi đáp</div>
+							<div><i class="fas fa-angle-double-right"></i> Quy chế hoạt động</div>
+							<div><i class="fas fa-angle-double-right"></i> Tuyển dụng</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
 						<h6>TRỢ GIÚP</h6>
 						<div class="items">
-							<a href=""><i class="fas fa-angle-double-right"></i> Hướng dẫn thanh toán</a>
-							<a href=""><i class="fas fa-angle-double-right"></i> Quy định đổi trả</a>
-							<a href=""><i class="fas fa-angle-double-right"></i> Quy định thảo luận</a>
-							<a href=""><i class="fas fa-angle-double-right"></i> Chính sức bảo mật</a>
-							<a href=""><i class="fas fa-angle-double-right"></i> Chính sách bán hàng</a>
+							<div><i class="fas fa-angle-double-right"></i> Hướng dẫn thanh toán</div>
+							<div><i class="fas fa-angle-double-right"></i> Quy định đổi trả</div>
+							<div><i class="fas fa-angle-double-right"></i> Quy định thảo luận</div>
+							<div><i class="fas fa-angle-double-right"></i> Chính sức bảo mật</div>
+							<div><i class="fas fa-angle-double-right"></i> Chính sách bán hàng</div>
 						</div>
 					</div>
 					<div class="col-lg-3">
@@ -146,10 +147,10 @@
 					<div class="col-lg-3">
 						<h6>LIÊN HỆ</h6>
 						<div class="contact">
-							<div class="google"><a href=""><i class="fab fa-google-plus-g"></i></a></div>
-							<div class="facebook"><a href=""><i class="fab fa-facebook-square"></i></a></div>
-							<div class="youtube"><a href=""><i class="fab fa-youtube"></i></a></div>
-							<div class="skype"><a href=""><i class="fab fa-skype"></i></a></div>
+							<div class="google"><i class="fab fa-google-plus-g"></i></div>
+							<div class="facebook"><i class="fab fa-facebook-square"></i></div>
+							<div class="youtube"><i class="fab fa-youtube"></i></div>
+							<div class="skype"><i class="fab fa-skype"></i></div>
 						</div>
 					</div>
 				</div>
@@ -160,6 +161,40 @@
 		</div>
 	</div>
 	<script type="text/javascript" src="{{asset('assets/js/script.js')}}"></script>
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+	<script>
+		Stripe.setPublishableKey('pk_test_51Io6EuKxusHC1Yn9n8TXNfjnZSSajhtC9nBeQdOafioDNy9OobFyeJcbiqMRTm8cB39LfjIFIFROiw8isRKe57lT00dYrhR2Bs');
+
+		var $form = $('#checkout-form');
+
+
+		$form.submit(function(event) {
+		$('#charge-error').addClass('hidden');
+		$form.find('button').prop('disabled', true);
+		Stripe.card.createToken({
+			number: $('#card-number').val(),
+			cvc: $('#card-cvc').val(),
+			exp_month: $('#card-expiry-month').val(),
+			exp_year: $('#card-expiry-year').val(),
+			name: $('#card-name').val()
+		}, stripeResponseHandler);
+		return false;
+		});	
+
+	function stripeResponseHandler(status, response) {
+		if (response.error) {
+			$('#charge-error').removeClass('hidden');
+			$('#charge-error').text(response.error.message);
+			$form.find('button').prop('disabled', false);
+		} else {
+			var token = response.id;
+			$form.append($('<input type="hidden" name="stripeToken" />').val(token));
+
+			// Submit the form:
+			$form.get(0).submit();
+		}
+	}
+	</script>
 </body>
 
 </html>

@@ -1,3 +1,4 @@
+@if (Session::get('admin') === "admin")
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +35,7 @@
        @yield('content')
 
     </div>
-    <!-- /#wrapper -->
+    <!-- /#wrapper -->  
 
     <!-- jQuery -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -83,6 +84,16 @@
         chart.draw(data, options);
       }
     </script>
+     <script>
+      $('#confirm-delete').on('show.bs.modal', function(e) {
+          $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+      });
+  </script>
 </body>
 
 </html>
+@else
+    @php
+        echo redirect()->route('login')->with("invalid","Xin vui lòng đăng nhập.");
+    @endphp
+@endif

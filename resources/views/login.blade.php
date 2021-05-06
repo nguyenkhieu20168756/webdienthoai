@@ -33,7 +33,7 @@
                         </a>
                    </li>
                    <li>
-                        <a href="{{  route('resetpwd') }}">
+                        <a href="{{  route('resetpwdForm') }}">
                              <i class="fas fa-sign-in-alt"></i>
                              Quên mật khẩu
                         </a>
@@ -68,7 +68,7 @@
                         <label class="control-label col-sm-2" for="password">Mật khẩu:</label>
                         <div class="col-sm-10">
                              <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu">
-                             <a href="{{  route('resetpwd') }}">Quên mật khẩu</a>
+                             <a href="{{  route('resetpwdForm') }}">Quên mật khẩu</a>
                         </div>
                    </div>
                    <div class="form-group">

@@ -33,7 +33,7 @@
                         </a>
                    </li>
                    <li>
-                        <a href="{{  route('resetpwd') }}">
+                        <a href="{{  route('resetpwdForm') }}">
                              <i class="fas fa-sign-in-alt"></i>
                              Quên mật khẩu
                         </a>

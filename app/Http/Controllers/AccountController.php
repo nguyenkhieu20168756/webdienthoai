@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Customer;
 
 class AccountController extends Controller
 {
@@ -73,7 +74,18 @@ class AccountController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $customer = Customer::find($id);
+        $customer->sex =  $request->input('sex');
+        $customer->phone = $request->input('phone');
+        $customer->city_id = $request->input('country');
+        $customer->district_id = $request->input('district');
+        $customer->ward_id = $request->input('ward');
+        $customer->save();
+        if(Session::has('customer')){
+            Session::forget('customer');
+            Session::put('customer',$customer);
+        }
+        return redirect()->route('account')->with("success","Cập nhật thành công");
     }
 
     /**
@@ -96,5 +108,33 @@ class AccountController extends Controller
     {
         Session::forget('customer');
         return redirect()->route('login')->with('success','Đăng xuất thành công.');
+    }
+
+
+     /**
+     * Reset password form
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function resetPasswordForm()
+    {
+        return view('resetpwd');
+    }
+
+    /**
+     * Reset password
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function resetPassword(Request $request, $id)
+    {
+        $customer = Customer::find($id);
+        if($request->input('password') === $request->input('repeatpassword')){
+            $customer->password = bcrypt($request->input('password'));
+            $customer->save();
+            return redirect()->route('account')->with('success','Cập nhật mật khẩu thành công.');
+        }
     }
 }

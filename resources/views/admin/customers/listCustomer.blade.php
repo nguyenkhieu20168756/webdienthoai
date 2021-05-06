@@ -38,9 +38,9 @@
                                 <td>{{ $customer['district_id'] }}</td>
                                 <td>{{ $customer['ward_id'] }}</td>
                                 <td>{{ $customer['status'] }}</td>
-                                <td><a href="{{ route('customer.delete',['id'=>$customer['id']]) }}"><i class="fa fa-times" aria-hidden="true"></i></a></td>
+                                <td><a href="{{ route('customer.delete',['id'=>$customer['id']]) }}"><i class="fa fa-times" aria-hidden="true"></i></a>
                                 <a href="{{ route('customer.disable',['id'=>$customer['id']]) }}" style="margin-right:1rem;"><i class="fa fa-ban" aria-hidden="true"></i></a>
-                                <a href="{{ route('customer.enable',['id'=>$customer['id']]) }}"><i class="fa fa-check-square" aria-hidden="true"></i>customer
+                                <a href="{{ route('customer.enable',['id'=>$customer['id']]) }}"><i class="fa fa-check-square" aria-hidden="true"></i></td>
                             </tr>
                         @endforeach
                 </tbody>

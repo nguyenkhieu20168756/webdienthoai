@@ -16,7 +16,6 @@
                         <tr align="center">
                             <th>Số thứ tự</th>
                             <th>Khách hàng</th>
-                            <th>Mã khuyến mãi</th>
                             <th>Thành tiền</th>
                             <th>Trang thái</th>
                             <th>Sản phẩm</th>

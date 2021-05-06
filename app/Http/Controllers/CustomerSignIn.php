@@ -44,6 +44,12 @@ class CustomerSignIn extends Controller
         ]);
 
         if(($request->input('email') == 'admin@gmail.com' && $request->input('password') == 'admin123')){
+            if(Session::has('admin')){
+                Session::forget('admin');
+                Session::put('admin','admin');
+            }else{
+                Session::put('admin','admin');
+            }
             return redirect()->route('dashboard')->with('success','Đăng nhập thành công vào admin.');
         }
         elseif(Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])){

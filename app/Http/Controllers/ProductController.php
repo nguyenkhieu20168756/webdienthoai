@@ -7,6 +7,13 @@ use App\Product;
 use App\Category;
 use App\Producer;
 use App\Brand;
+use App\Cart;
+use App\Order;
+use Stripe\Charge;
+use Stripe\Stripe;
+use Stripe\Customer;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -89,7 +96,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        $randomProduct = Product::inRandomOrder()->limit(1)->get();
+        $randomProduct = Product::inRandomOrder()->limit(3)->get();
         return view('product-detail',['product'=>$product,'randomProduct'=>$randomProduct]);
     }
 
@@ -142,5 +149,146 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->delete();
         return redirect()->route('product.list')->with("success","Xóa thành công");
+    }
+
+    /**
+     * Disable status product
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function disable($id)
+    {
+        $product = Product::find($id);
+        $product->status = 0;
+        $product->save();
+        return redirect()->route('product.list')->with("success","Vô hiệu hóa thành công");
+    }
+
+    /**
+     * Enable status product
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function enable($id)
+    {
+        $product = Product::find($id);
+        $product->status = 1;
+        $product->save();
+        return redirect()->route('product.list')->with("success","Mở thành công");
+    }
+
+    /**
+     * Add to cart
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addToCart(Request $request, $id)
+    {
+        if(Auth::check()){
+            $product = Product::find($id);
+            $oldCart = Session::has('cart') ? Session::get('cart') : null;
+            $cart = new Cart($oldCart);
+            $cart->add($product,$product->id);
+            $request->session()->put('cart',$cart);
+            return redirect()->route('product.detail',['id' => $product->id])->with('success','Thêm giỏ hàng thành công');
+        }else{
+            return redirect()->route('login')->with("invalid","Vui lòng đăng nhập trước khi mua hàng");
+        }
+    }  
+    
+    /**
+     * Show item in cart
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getCart(){
+        if(!Session::has('cart')){
+            return view('cart');
+        }
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        return view('cart', ['products' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+    }
+
+    /**
+     * Delete item in cart
+     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteItem($id){
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->deleteItem($id);
+        if(count($cart->items) > 0){
+            Session::put('cart',$cart);
+        }else{
+            Session::forget('cart');
+        }
+        return redirect()->route('cart');
+    }
+
+    /**
+     * Checkout
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function checkout(){
+        if(!Session::has('cart')){
+            return view('cart');
+        }
+        $oldCart = Session::get('cart');
+        $id = Session::get('customer')->id;
+        $customer = DB::select(
+            'select u.*,c.name c_name,d.name d_name,w.name w_name 
+            from customers u,cities c,districts d,wards w 
+            where u.city_id = c.matp and u.district_id = d.maqh and u.ward_id = w.xaid and id = ?',[$id]
+        );
+        $cart = new Cart($oldCart);
+        return view('checkout', ['products' => $cart->items, 'totalPrice' => $cart->totalPrice, 'customer' => $customer[0]]);
+    }
+
+        /**
+     * Pay
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function pay(Request $request){
+        if(!Session::has('cart')){
+            return view('cart');
+        }
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        Stripe::setApiKey('sk_test_51Io6EuKxusHC1Yn9l2oeVKkx1qtlkbVH47pvnqvBNsyI9pHtUHasn57KdDmevaVoXF4OdHTd8TRrzMueBEv48F2e00KgP0E2it');
+        $customer = new Customer();
+        $customerDetailsAry = array(
+            'email' => $request->input('email'),
+            'source' => $request->input('stripeToken')
+        );
+        $customerDetails = $customer->create($customerDetailsAry);
+        try {
+            $charge = Charge::create(array(
+                "customer" => $customerDetails->id,
+                "amount" => $cart->totalPrice,
+                "currency" => $request->input('currency_code'),
+            ));
+            $order = new Order();
+            foreach($cart->items as $row){
+                $order->customer_id = $request->input('customer_id');
+                $order->total = $cart->totalPrice;
+                $order->product_id = $row['item']['id'];
+                $order->order_code = $charge->id;
+                $order->save();
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('checkout')->with('error', $e->getMessage());
+        }
+        Session::forget('cart');
+        return view('thank');
     }
 }

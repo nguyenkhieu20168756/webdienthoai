@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2021 at 05:06 PM
+-- Generation Time: May 06, 2021 at 05:11 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -88,7 +88,8 @@ CREATE TABLE `categories` (
 
 INSERT INTO `categories` (`id`, `title`, `status`, `created_at`, `updated_at`) VALUES
 (2, 'Phụ kiện Apple', 1, '2021-04-11 22:49:58', '2021-04-12 05:54:07'),
-(3, 'Dán màn hình', 1, '2021-04-11 23:31:47', '2021-04-12 06:31:47');
+(3, 'Dán màn hình', 1, '2021-04-11 23:31:47', '2021-04-12 06:31:47'),
+(4, 'Ốp lưng', 1, '2021-04-29 23:36:22', '2021-04-30 06:36:22');
 
 -- --------------------------------------------------------
 
@@ -230,7 +231,8 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `username`, `password`, `email`, `phone`, `sex`, `city_id`, `district_id`, `ward_id`, `admin`, `created_at`, `updated_at`, `status`, `verify`) VALUES
-(12, 'hyquynh', '$2y$10$sRvQ8O.joI9ppr2FcJz5Ru4V5qMe0GaDwQgaYeuEQg9oTPFV5bl6G', 'hyquynh123@gmail.com', '0123456789', 'female', '02', '028', '00862', 0, '2021-04-14 18:24:49', '2021-04-15 01:58:21', 1, 1);
+(12, 'hyquynh', '$2y$10$sRvQ8O.joI9ppr2FcJz5Ru4V5qMe0GaDwQgaYeuEQg9oTPFV5bl6G', 'hyquynh123@gmail.com', '0123456789', 'female', '02', '028', '00862', 0, '2021-04-14 18:24:49', '2021-04-15 01:58:21', 1, 1),
+(13, 'luan123', '$2y$10$dYv6Bori6/bZ1l5eAuTJwOaEvfpNzV5qJYjZFx0iFQ9msywZ.Ac2C', 'nguyenhuuluan17@gmail.com', '0898103236', 'male', '25', '236', '08476', 0, '2021-05-06 04:46:08', '2021-05-06 11:46:34', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -896,8 +898,16 @@ CREATE TABLE `orders` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `product_id` bigint(20) NOT NULL,
-  `order_code` bigint(10) NOT NULL
+  `order_code` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `customer_id`, `promotion_id`, `total`, `status`, `updated_at`, `created_at`, `product_id`, `order_code`) VALUES
+(28, 13, NULL, 200000, 0, '2021-05-06 08:00:03', '2021-05-06 08:00:03', 7, 'ch_1Io8gHKxusHC1Yn95AYxfq0y'),
+(29, 13, NULL, 7000000, 0, '2021-05-06 08:08:22', '2021-05-06 08:08:22', 8, 'ch_1Io8oLKxusHC1Yn9ZU8BhgFc');
 
 -- --------------------------------------------------------
 
@@ -946,11 +956,14 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `title`, `price`, `category_id`, `image_path`, `created_at`, `updated_at`, `producer_id`, `description`, `brand_id`, `quantity`, `status`, `sku`) VALUES
-(1, 'abc', 10000, 2, 'abc.jpg', '2021-04-12 18:53:19', '2021-04-14 01:34:58', 1, '<p><u><em><strong>abc</strong></em></u></p>', 3, 100, 1, 'abc'),
-(2, 'def', 20000, 3, 'def.webp', '2021-04-13 00:48:14', '2021-04-14 01:37:46', 1, '<p><strong>def</strong></p>', 4, 100, 1, 'def'),
-(3, 'ghj', 20000, 3, 'ghj.jpg', '2021-04-13 01:34:06', '2021-04-14 01:38:08', 1, '<p>ghj</p>', 5, 400, 1, 'ghj'),
-(4, 'klz', 20000, 2, 'klz.jpg', '2021-04-13 01:34:36', '2021-04-14 01:38:21', 1, '<p>klz</p>', 4, 100, 1, 'klz'),
-(5, 'xyz', 20000, 3, 'xyz.jpg', '2021-04-13 01:58:12', '2021-04-14 01:40:22', 1, '<p>xyz</p>', 5, 100, 1, 'xyz');
+(6, 'Tai nghe bluetooth', 100000, 2, 'Tai nghe bluetooth.webp', '2021-04-17 22:05:37', '2021-04-18 05:05:37', 1, '<p>abc</p>', 3, 100, 1, 'abc'),
+(7, 'Camera hành trình', 200000, 3, 'Camera hành trình.jpg', '2021-04-17 22:06:26', '2021-04-18 05:06:26', 1, '<p>123</p>', 4, 200, 1, '123'),
+(8, 'Apple airpod 2', 3500000, 3, 'Apple airpod 2.jpg', '2021-04-17 22:07:22', '2021-04-18 05:07:22', 1, '<p>123</p>', 6, 200, 1, 'abc'),
+(9, 'Sạc nhanh', 200000, 2, 'Sạc nhanh.jpg', '2021-04-17 22:08:13', '2021-04-18 05:08:13', 1, '<p>123</p>', 3, 200, 1, '123'),
+(10, 'Sạc nhanh 2', 200000, 3, 'Sạc nhanh 2.webp', '2021-04-17 22:08:42', '2021-04-18 05:08:42', 1, '<p>123</p>', 3, 100, 1, 'abc'),
+(11, 'Router wifi', 200000, 2, 'Router wifi.webp', '2021-04-17 22:09:14', '2021-04-18 05:09:14', 1, '<p>123</p>', 3, 2000, 1, '123'),
+(12, 'Máy chơi game', 1000000, 2, 'Máy chơi game.jpg', '2021-04-17 22:09:43', '2021-04-18 05:09:43', 1, '<p>123</p>', 3, 200, 1, '123'),
+(13, 'Camera 2', 200000, 2, 'Camera 2.jpg', '2021-04-17 22:10:17', '2021-04-18 05:10:17', 1, '<p>123</p>', 3, 123, 1, 'abc');
 
 -- --------------------------------------------------------
 
@@ -996,7 +1009,6 @@ CREATE TABLE `slides` (
 --
 
 INSERT INTO `slides` (`id`, `name`, `image_path`, `sort_order`, `created_at`, `updated_at`, `status`) VALUES
-(1, 'Slide 1', 'Slide 1.webp', 1, '2021-04-12 01:51:17', '2021-04-14 02:54:59', 1),
 (2, 'Slide 2', 'Slide 2.webp', 3, '2021-04-12 21:06:15', '2021-04-14 02:54:51', 1),
 (3, 'Slide 3', 'Slide 3.webp', 2, '2021-04-12 21:06:30', '2021-04-13 04:06:30', 1);
 
@@ -11754,13 +11766,13 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -11778,13 +11790,13 @@ ALTER TABLE `contacts`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `producers`
@@ -11796,7 +11808,7 @@ ALTER TABLE `producers`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `promotions`

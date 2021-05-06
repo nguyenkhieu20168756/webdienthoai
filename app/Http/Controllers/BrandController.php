@@ -57,7 +57,7 @@ class BrandController extends Controller
         }
     }
 
-    /**
+       /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -65,8 +65,12 @@ class BrandController extends Controller
      */
     public function show($id)
     {
-        //
+        $products = DB::select('select * from products where brand_id = :id', ['id' => $id]);
+        $brands = Brand::inRandomOrder()->limit(4)->get();
+        $brand = Brand::find($id);
+        return view('product-brand',['products' => $products,'brands' => $brands,'brand' => $brand]);
     }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -1,17 +1,18 @@
 @extends('layouts.template')
 
 @section('title')
-{{ $brand['name'] }}
+{{ $category->title }}
 @endsection
 @section('content')
 <div class="container mt-3 mb-3">
     <div class="row mb-4">
         <div class="col-lg-3 col-md-12">
             <div class="menu-news">
-                <h5 class="new-title">MỘT SỐ THƯƠNG HIỆU</h5>
+                <h5 class="new-title">SẢN PHẨM</h5>
                 <ul>
-                    @foreach ($brands as $brand)
-                        <a href="{{ route('brand.product',['id' => $brand['id']]) }}"><img src="{{ asset('storage/images/brands/'.$brand['img_path']) }}" class="img-responsive mt-3" width="200px" height="100px" /></a>
+                    @foreach ($categories as $category)
+                        <li><i class="fas fa-arrow-circle-right"></i> <a href="{{ route('product.category',['id' => $category->id]) }}">{{ $category->title }}</a></li>
+                        <hr />
                     @endforeach
                 </ul>
             </div>
@@ -36,7 +37,7 @@
                         </div>
                     @endforeach
                 @else
-                    <div>Thương hiệu này chưa ra mắt sản phẩm, xin vui lòng quay lại sau.</div>
+                    <div>Danh mục hiện tại chưa có sản phẩm, xin vui lòng quay lại sau.</div>
                 @endif
             </div>
         </div>
