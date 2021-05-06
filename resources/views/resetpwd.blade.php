@@ -44,7 +44,7 @@
               <div class="heading-lg">
                    <h1>RESET PASSWORD</h1>
               </div>
-              <form class="form-horizontal mt-4" method="POST" action="">
+              <form class="form-horizontal mt-4" method="POST" action="{{ route('resetpwd',['id' => Session::get('customer')->id ])}}">
                    @csrf
                    <div class="form-group">
                         <label class="control-label col-sm-2" for="username">Password:</label>
@@ -60,7 +60,7 @@
                    </div>
                    <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                             <button type="submit" class="btn-login">Đăng nhập</button>
+                             <button type="submit" class="btn-login">Cập nhật</button>
                         </div>
                    </div>
               </form>

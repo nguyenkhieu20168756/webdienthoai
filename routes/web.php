@@ -48,7 +48,7 @@ Route::get('/verify/{mail}','VerifyMailController@verify');
 
 Route::get('account',['uses'=>'AccountController@index','as'=>'account']);
 
-Route::post('account',['uses'=>'AccountController@update','as'=>'handle.edit']);
+Route::post('account/id/{id}',['uses'=>'AccountController@update','as'=>'handle.edit']);
 
 Route::get('logout',['uses'=>'AccountController@logout','as'=>'logout']);
 

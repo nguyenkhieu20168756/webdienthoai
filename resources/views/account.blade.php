@@ -71,7 +71,7 @@
                          <h1>Thông tin cá nhân</h1>
                     </div>
                     <div class="form-checkout">
-                         <form action="{{ route('handle.edit') }}" method="POST" enctype="multipart/form-data">
+                         <form action="{{ route('handle.edit',['id' => Session::get('customer')->id ])}}" method="POST" enctype="multipart/form-data">
                               @csrf
                               <h2>THÔNG TIN CÁ NHÂN</h2>
                               <div class="form-group">
