@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Promotion;
+use App\Cart;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class PromotionController extends Controller
 {
@@ -106,5 +109,27 @@ class PromotionController extends Controller
         $promotion = Promotion::find($id);
         $promotion->delete();
         return redirect()->route('promotion.list')->with("success","Xóa thành công");
+    }
+
+    /**
+     * Check promotion code
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function check()
+    {
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        $promotion = DB::select('select price,quantity from promotions where code = ?',[$_GET['code']]);
+        if(count($promotion) <= 0 ){
+            $msg = [0];
+            $msg[] = "Mã này không tồn tại, vui lòng thử mã khác";
+            $msg[] = $cart->totalPrice;
+        }else{
+            $msg = [1,$_GET['code']];
+            Promotion::where('code',$_GET['code'])->update(['quantity' => $promotion[0]->quantity - 1]);
+            $msg[] = $cart->totalPrice - $promotion[0]->price ;
+        }
+        return response()->json($msg);
     }
 }

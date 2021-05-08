@@ -38,6 +38,8 @@ Route::get('ward',['uses'=>'WardController@index']);
 
 Route::get('sort',['uses'=>'SortController@index']);
 
+Route::get('check',['uses'=>'PromotionController@check']);
+
 Route::get('article',['uses'=>'ArticleController@showArticle','as'=>'article']);
 
 Route::get('article/id/{id}',['uses'=>'ArticleController@show','as'=>'article.detail']);
@@ -60,9 +62,31 @@ Route::get('checkout',['uses'=>'ProductController@checkout','as'=>'checkout']);
 
 Route::post('pay',['uses'=>'ProductController@pay','as'=>'pay']);
 
+Route::get('decrease/{id}',['uses'=>'ProductController@decreaseItem','as'=>'decrease.item']);
+
+Route::get('increase/{id}',['uses'=>'ProductController@increaseItem','as'=>'increase.item']);
+
 Route::get('resetpwd',['uses'=>'AccountController@resetPasswordForm','as'=>'resetpwdForm']);
 
 Route::post('resetpwd/id/{id}',['uses'=>'AccountController@resetPassword','as'=>'resetpwd']);
+
+Route::get('forgetpwd',['uses'=>'AccountController@forgetPasswordForm','as'=>'forgetpwdForm']);
+
+Route::post('forgetpwd',['uses'=>'AccountController@forgetPassword','as'=>'forgetpwd']);
+
+Route::get('/getpassword/{mail}','AccountController@getPasswordForm');
+
+Route::post('updatepwd',['uses'=>'AccountController@updatePassword','as'=>'updatepwd']);
+
+Route::get('addcontact',['uses'=>'ContactController@store','as'=>'add.contact']);
+
+Route::post('addcomment',['uses'=>'CommentController@store','as'=>'add.comment']);
+
+Route::resource('/replies','ReplyController');
+
+Route::get('my-order/id/{id}',['uses'=>'OrderController@showMyOrder','as'=>'my.order']);
+
+Route::get('my-order-see/code/{code}',['uses'=>'OrderController@seeMyOrder','as'=>'my.order.see']);
 
 Route::get('/introduce', function () {
     return view('introduce');
@@ -170,15 +194,13 @@ Route::group(['prefix'=>'admin'],function(){
 
         Route::get('delete/{id}',['uses'=>'CommentController@destroy','as'=>'comment.delete']);
 	});
-    // Order
+     // Order
 	Route::group(['prefix'=>'order'],function(){
         Route::get('list',['uses'=>'OrderController@index','as'=>'order.list']);
         
-        Route::get('edit/{id}',['uses'=>'OrderController@edit','as'=>'order.edit.form']);
+        Route::get('see/{code}',['uses'=>'OrderController@show','as'=>'order.see']);
 
-		Route::post('edit/{id}',['uses'=>'OrderController@update','as'=>'order.edit']);
-        
-        Route::get('delete/{id}',['uses'=>'OrderController@destroy','as'=>'order.delete']);
+        Route::post('edit/{code}',['uses'=>'OrderController@update','as'=>'order.edit']);
 
         Route::get('/back', function () {
             return redirect()->route('order.list');
@@ -264,4 +286,8 @@ Route::group(['prefix'=>'admin'],function(){
             return redirect()->route('customer.list');
         })->name('customer.back');
     });
+    // Contact
+	Route::group(['prefix'=>'contact'],function(){
+        Route::get('list',['uses'=>'ContactController@index','as'=>'contact.list']);
+	});
 });

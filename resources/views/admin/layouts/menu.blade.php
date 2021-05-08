@@ -98,6 +98,15 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
+                <a href="#"><i class="fa fa-weixin" aria-hidden="true"></i> Liên hệ<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ route('contact.list') }}">Danh sách</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
                 <a href="#"><i class="fa fa-comments-o" aria-hidden="true"></i> Đánh giá<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>

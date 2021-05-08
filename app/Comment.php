@@ -11,6 +11,6 @@ class Comment extends Model
     *
     * @var array
     */
-   protected $fillable = ['title','content','sort_order'];
+   protected $fillable = ['customer_id','product_id','content'];
    protected $table = "comments";
 }

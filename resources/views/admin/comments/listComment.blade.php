@@ -9,15 +9,25 @@
                 <h1 class="page-header">Đánh giá
                     <small>Danh sách</small>
                 </h1>
+                @if(Session::has('invalid'))
+                    <div class="alert alert-danger alert-dismissible">
+                         <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                         {{Session::get('invalid')}}
+                    </div>
+                    @endif
+                    @if(Session::has('success'))
+                            <div class="alert alert-success alert-dismissible">
+                                <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                {{Session::get('success')}}
+                            </div>
+                    @endif
             </div>
             <!-- /.col-lg-12 -->
             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                 <thead>
                     <tr>
                         <th>Số thứ tự</th>
-                        <th>Tiêu đề</th>
                         <th>Nội dung</th>
-                        <th>Thứ tự hiển thị</th>
                         <th>Chức năng</th>
                     </tr>
                 </thead>
@@ -25,9 +35,7 @@
                     @foreach ($comments as $comment)
                         <tr>
                             <td>{{ $comment['id'] }}</td>
-                            <td>{{ $comment['title'] }}</td>
                             <td>{{ $comment['content'] }}</td>
-                            <td>{{ $comment['sort_order'] }}</td>
                             <td>
                                 <a href="{{ route('comment.delete',['id'=>$comment['id']]) }}"><i class="fa fa-times" aria-hidden="true"></i></a>
                             </td>

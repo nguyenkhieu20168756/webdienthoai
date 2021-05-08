@@ -83,4 +83,28 @@ class CustomerController extends Controller
     {
         //
     }
+
+         /**
+     * Disable account
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function disable($id)
+    {
+        Customer::where('id',$id)->update(['status' => 0]);
+        return redirect()->back()->with('success','Khóa tài khoản thành công.');
+    }
+
+     /**
+     * Enable account
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function enable($id)
+    {
+        Customer::where('id',$id)->update(['status' => 1]);
+        return redirect()->back()->with('success','Mở tài khoản thành công.');
+    }
 }

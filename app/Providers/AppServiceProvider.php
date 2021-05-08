@@ -25,13 +25,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Paginator::useBootstrapThree();
         view()->composer('layouts.template',function($view){
              $view->with(
                  [
                      'categories' => DB::table('categories')->where('status','=',1)->get()
                  ]
             );
+        });
+        view()->composer('admin.layouts.index',function($view){
+            $data = DB::select(
+                'SELECT DATE_FORMAT(o.created_at,"%d/%m/%Y") order_day,SUM(o.price)-p.price total_price FROM orders o,promotions p WHERE o.promotion_id = p.id and o.status = 2 GROUP BY order_day'
+            );
+            $view->with('data',$data);
         });
     }
 }

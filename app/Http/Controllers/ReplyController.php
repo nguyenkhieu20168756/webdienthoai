@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Comment;
+use Illuminate\Support\Facades\Session;
 use App\Reply;
-use Illuminate\Support\Facades\DB;
 
-class CommentController extends Controller
+class ReplyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments = Comment::all();
-        return view('admin.comments.listComment',['comments'=>$comments]);
+        //
     }
 
     /**
@@ -39,18 +37,12 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         // Form validation
-        $this->validate($request, [
-            'customer_id' => 'required',
-            'product_id' => 'required',
-            'content' => 'required'
+        Reply::create([
+            'comment_id' => $request->input('comment_id'),
+            'customer_id' => Session::get('customer')->id,
+            'name' => $request->input('name'),
+            'reply_content' => $request->input('reply'),
         ]);
-        //  Store data in database
-        $comment = new Comment([
-            'customer_id' => $request->input('customer_id'),
-            'product_id' => $request->input('product_id'),
-            'content' => $request->input('content')
-        ]);
-        $comment->save();
         return redirect()->back();
     }
 
@@ -96,9 +88,6 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        Reply::where('comment_id',$id)->delete();
-        $comment = Comment::find($id);
-        $comment->delete();
-        return redirect()->back()->with('success','Xóa thành công');
+        //
     }
 }

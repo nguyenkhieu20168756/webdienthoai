@@ -27,7 +27,7 @@
                               </a>
                          </li>
                          <li href="">
-                              <a href="{{  route('register') }}">
+                              <a href="{{  route('my.order',['id'=>Session::get('customer')->id]) }}">
                                    <i class="fas fa-sign-in-alt"></i>
                                    Đơn hàng của tôi
                               </a>

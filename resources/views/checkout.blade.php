@@ -13,8 +13,8 @@
 }
 
 .col-25 {
-  -ms-flex: 25%; /* IE10 */
-  flex: 25%;
+  -ms-flex: 35%; /* IE10 */
+  flex: 35%;
 }
 
 .col-50 {
@@ -23,8 +23,8 @@
 }
 
 .col-75 {
-  -ms-flex: 75%; /* IE10 */
-  flex: 75%;
+  -ms-flex: 65%; /* IE10 */
+  flex: 65%;
 }
 
 .col-25,
@@ -127,7 +127,7 @@ span.price {
               <div class="row">
                 <div class="col-50">
                   <label for="card-name"><i class="fa fa-user"></i> Tên</label>
-                  <input type="text" class="input-form-pay" id="card-name" class="form-control" value="{{ Session::get('customer')->username }}" readonly>
+                  <input type="text" class="input-form-pay" id="card-name" value="{{ Session::get('customer')->username }}" readonly>
                   <label for="email"><i class="fa fa-envelope"></i> Email</label>
                   <input type="text" class="input-form-pay" id="email" name="email" value="{{ Session::get('customer')->email }}" readonly>
                   <label for="city"><i class="fas fa-map-marker-alt"></i> Thành phố</label>
@@ -137,13 +137,21 @@ span.price {
                   <label for="ward"><i class="fas fa-map-marker-alt"></i> Xã/phường</label>
                   <input type="text" class="input-form-pay" id="ward" name="ward" value="{{ $customer->w_name }}" disabled>
                   <label for="card-number">Số thẻ</label>
-                  <input type="text" id="card-number" class="input-form-pay" class="form-control" required>
+                  <input type="text" id="card-number" class="input-form-pay" required>
                   <label for="card-expiry-month">Hạn mức tháng</label>
-                  <input type="text" class="input-form-pay" id="card-expiry-month" class="form-control" required>
+                  <select name="card-expiry-month" id="card-expiry-month" class="input-form-pay" required>
+                    @for($i = 1;$i<=12;$i++)
+                         <option value="{{ $i }}">{{ $i }}</option>
+                    @endfor
+                  </select>
                   <label for="card-expiry-year">Hạn mức năm</label>
-                  <input type="text" class="input-form-pay" id="card-expiry-year" class="form-control" required>
+                  <select name="card-expiry-year" id="card-expiry-year" class="input-form-pay" required>
+                      @for($i = 2022;$i<=2030;$i++)
+                         <option value="{{ $i }}">{{ $i }}</option>
+                      @endfor
+                  </select>
                   <label for="card-cvc">CVC</label>
-                  <input type="text" class="input-form-pay" id="card-cvc" class="form-control" required>
+                  <input type="text" id="card-cvc" class="input-form-pay" required>
                 </div>
               </div>
               <button type="submit" class="btn">Thanh toán</button>
@@ -154,10 +162,15 @@ span.price {
           <div class="container">
             <h4>Giỏ hàng <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b>{{ Session::has('cart') ? Session::get('cart')->totalQty : '' }}</b></span></h4>
             @foreach ($products as $product)
-                <p><a href="{{ route('product.detail',['id' => $product['item']['id']]) }}">{{ $product['item']['title'] }}</a> <span class="price">{{ number_format($product['item']['price'] * $product['qty'],-3,',',',') }}₫</span></p> 
+                <p><a href="{{ route('product.detail',['id' => $product['item']['id']]) }}">{{ $product['item']['title'] }}</a> <span class="price">{{ number_format($product['item']['price'] * $product['qty'],-3,',',',') }} VND</span></p> 
             @endforeach
             <hr>
-            <p>Total <span class="total-cart" style="color:black"><b>{{ number_format($totalPrice,-3,',',',') }}₫</b></span></p>
+            <p>Total <span class="total-cart" style="color:black"><b>{{ number_format($totalPrice,-3,',','.') }} VND</b></span></p>
+            <div class="mt-3">
+              <div id="none-promotion"></div>
+              <input type="text" id="promotion-code" placeholder="Nhập mã khuyến mãi (nếu có)" class="form-control"/>
+              <button type="button" id="add-promotion" class="btn">Xác nhận</button>
+            </div>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2021 at 05:11 PM
+-- Generation Time: May 08, 2021 at 07:37 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -187,6 +187,16 @@ CREATE TABLE `comments` (
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `customer_id`, `product_id`, `content`, `created_at`, `updated_at`) VALUES
+(2, 13, 6, 'Hello', '2021-05-08 04:48:13', '2021-05-08 11:48:13'),
+(3, 13, 6, 'abc', '2021-05-08 04:59:05', '2021-05-08 11:59:05'),
+(4, 13, 6, '123', '2021-05-08 05:37:34', '2021-05-08 12:37:34'),
+(5, 12, 9, 'Quá tệ, nhân viên không nhiệt tình.', '2021-05-08 07:22:10', '2021-05-08 14:22:10');
+
 -- --------------------------------------------------------
 
 --
@@ -200,8 +210,17 @@ CREATE TABLE `contacts` (
   `phone` varchar(10) NOT NULL,
   `title` text NOT NULL,
   `content` text NOT NULL,
-  `customer_id` bigint(20) NOT NULL
+  `name` varchar(30) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `contacts`
+--
+
+INSERT INTO `contacts` (`id`, `address`, `email`, `phone`, `title`, `content`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'abc', 'hyquynh123@gmail.com', '0813798168', '123', '123', 'hyquynh', '2021-05-07 19:39:25', '2021-05-08 02:39:25');
 
 -- --------------------------------------------------------
 
@@ -231,7 +250,7 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `username`, `password`, `email`, `phone`, `sex`, `city_id`, `district_id`, `ward_id`, `admin`, `created_at`, `updated_at`, `status`, `verify`) VALUES
-(12, 'hyquynh', '$2y$10$sRvQ8O.joI9ppr2FcJz5Ru4V5qMe0GaDwQgaYeuEQg9oTPFV5bl6G', 'hyquynh123@gmail.com', '0123456789', 'female', '02', '028', '00862', 0, '2021-04-14 18:24:49', '2021-04-15 01:58:21', 1, 1),
+(12, 'hyquynh', '$2y$10$dYv6Bori6/bZ1l5eAuTJwOaEvfpNzV5qJYjZFx0iFQ9msywZ.Ac2C', 'hyquynh123@gmail.com', '0813798168', 'female', '02', '028', '00862', 0, '2021-04-14 18:24:49', '2021-05-08 21:21:21', 1, 1),
 (13, 'luan123', '$2y$10$dYv6Bori6/bZ1l5eAuTJwOaEvfpNzV5qJYjZFx0iFQ9msywZ.Ac2C', 'nguyenhuuluan17@gmail.com', '0898103236', 'male', '25', '236', '08476', 0, '2021-05-06 04:46:08', '2021-05-06 11:46:34', 1, 1);
 
 -- --------------------------------------------------------
@@ -893,21 +912,22 @@ CREATE TABLE `orders` (
   `id` bigint(20) NOT NULL,
   `customer_id` bigint(20) NOT NULL,
   `promotion_id` bigint(20) DEFAULT NULL,
-  `total` float NOT NULL DEFAULT 0,
   `status` tinyint(1) NOT NULL DEFAULT 0,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `product_id` bigint(20) NOT NULL,
-  `order_code` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `order_code` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `price` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `customer_id`, `promotion_id`, `total`, `status`, `updated_at`, `created_at`, `product_id`, `order_code`) VALUES
-(28, 13, NULL, 200000, 0, '2021-05-06 08:00:03', '2021-05-06 08:00:03', 7, 'ch_1Io8gHKxusHC1Yn95AYxfq0y'),
-(29, 13, NULL, 7000000, 0, '2021-05-06 08:08:22', '2021-05-06 08:08:22', 8, 'ch_1Io8oLKxusHC1Yn9ZU8BhgFc');
+INSERT INTO `orders` (`id`, `customer_id`, `promotion_id`, `status`, `updated_at`, `created_at`, `product_id`, `order_code`, `qty`, `price`) VALUES
+(33, 12, 0, 0, '2021-05-08 08:08:28', '2021-05-08 08:08:28', 7, 'ch_1IorlYKxusHC1Yn9f72sKNmA', 3, 600000),
+(34, 12, 0, 0, '2021-05-08 08:08:28', '2021-05-08 08:08:28', 9, 'ch_1IorlYKxusHC1Yn9f72sKNmA', 2, 400000);
 
 -- --------------------------------------------------------
 
@@ -957,11 +977,11 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `title`, `price`, `category_id`, `image_path`, `created_at`, `updated_at`, `producer_id`, `description`, `brand_id`, `quantity`, `status`, `sku`) VALUES
 (6, 'Tai nghe bluetooth', 100000, 2, 'Tai nghe bluetooth.webp', '2021-04-17 22:05:37', '2021-04-18 05:05:37', 1, '<p>abc</p>', 3, 100, 1, 'abc'),
-(7, 'Camera hành trình', 200000, 3, 'Camera hành trình.jpg', '2021-04-17 22:06:26', '2021-04-18 05:06:26', 1, '<p>123</p>', 4, 200, 1, '123'),
-(8, 'Apple airpod 2', 3500000, 3, 'Apple airpod 2.jpg', '2021-04-17 22:07:22', '2021-04-18 05:07:22', 1, '<p>123</p>', 6, 200, 1, 'abc'),
-(9, 'Sạc nhanh', 200000, 2, 'Sạc nhanh.jpg', '2021-04-17 22:08:13', '2021-04-18 05:08:13', 1, '<p>123</p>', 3, 200, 1, '123'),
+(7, 'Camera hành trình', 200000, 3, 'Camera hành trình.jpg', '2021-04-17 22:06:26', '2021-05-08 15:08:28', 1, '<p>123</p>', 4, 195, 1, '123'),
+(8, 'Apple airpod 2', 3500000, 3, 'Apple airpod 2.jpg', '2021-04-17 22:07:22', '2021-05-08 15:00:30', 1, '<p>123</p>', 6, 199, 1, 'abc'),
+(9, 'Sạc nhanh', 200000, 2, 'Sạc nhanh.jpg', '2021-04-17 22:08:13', '2021-05-08 15:08:28', 1, '<p>123</p>', 3, 198, 1, '123'),
 (10, 'Sạc nhanh 2', 200000, 3, 'Sạc nhanh 2.webp', '2021-04-17 22:08:42', '2021-04-18 05:08:42', 1, '<p>123</p>', 3, 100, 1, 'abc'),
-(11, 'Router wifi', 200000, 2, 'Router wifi.webp', '2021-04-17 22:09:14', '2021-04-18 05:09:14', 1, '<p>123</p>', 3, 2000, 1, '123'),
+(11, 'Router wifi', 200000, 2, 'Router wifi.webp', '2021-04-17 22:09:14', '2021-05-08 15:00:30', 1, '<p>123</p>', 3, 1998, 1, '123'),
 (12, 'Máy chơi game', 1000000, 2, 'Máy chơi game.jpg', '2021-04-17 22:09:43', '2021-04-18 05:09:43', 1, '<p>123</p>', 3, 200, 1, '123'),
 (13, 'Camera 2', 200000, 2, 'Camera 2.jpg', '2021-04-17 22:10:17', '2021-04-18 05:10:17', 1, '<p>123</p>', 3, 123, 1, 'abc');
 
@@ -973,8 +993,8 @@ INSERT INTO `products` (`id`, `title`, `price`, `category_id`, `image_path`, `cr
 
 CREATE TABLE `promotions` (
   `id` bigint(20) NOT NULL,
-  `title` varchar(75) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(75) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `price` float NOT NULL DEFAULT 0,
   `quantity` smallint(6) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -986,7 +1006,31 @@ CREATE TABLE `promotions` (
 --
 
 INSERT INTO `promotions` (`id`, `title`, `code`, `price`, `quantity`, `created_at`, `updated_at`) VALUES
-(3, 'Sale 10%', '#welcome', 10000, 100, '2021-04-12 18:43:29', '2021-04-13 01:43:29');
+(0, 'Không có', NULL, 0, 0, '2021-05-08 15:18:23', '2021-05-08 23:50:05'),
+(3, 'Sale 10%', '#welcome', 10000, 996, '2021-04-12 18:43:29', '2021-05-08 04:18:38');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `replies`
+--
+
+CREATE TABLE `replies` (
+  `id` bigint(20) NOT NULL,
+  `comment_id` bigint(20) NOT NULL,
+  `customer_id` bigint(20) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `reply_content` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `replies`
+--
+
+INSERT INTO `replies` (`id`, `comment_id`, `customer_id`, `name`, `reply_content`, `created_at`, `updated_at`) VALUES
+(4, 2, 12, 'hyquynh', 'Hello bro', '2021-05-08 07:22:50', '2021-05-08 14:22:50');
 
 -- --------------------------------------------------------
 
@@ -11693,8 +11737,7 @@ ALTER TABLE `comments`
 -- Indexes for table `contacts`
 --
 ALTER TABLE `contacts`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_CustomerContact` (`customer_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `customers`
@@ -11741,6 +11784,14 @@ ALTER TABLE `promotions`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `replies`
+--
+ALTER TABLE `replies`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_CommentReply` (`comment_id`),
+  ADD KEY `FK_CustomerReply` (`customer_id`);
+
+--
 -- Indexes for table `slides`
 --
 ALTER TABLE `slides`
@@ -11778,13 +11829,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `customers`
@@ -11796,7 +11847,7 @@ ALTER TABLE `customers`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `producers`
@@ -11814,7 +11865,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `replies`
+--
+ALTER TABLE `replies`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `slides`
@@ -11832,12 +11889,6 @@ ALTER TABLE `slides`
 ALTER TABLE `comments`
   ADD CONSTRAINT `FK_CustomerComment` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
   ADD CONSTRAINT `FK_ProductComment` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
-
---
--- Constraints for table `contacts`
---
-ALTER TABLE `contacts`
-  ADD CONSTRAINT `FK_CustomerContact` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`);
 
 --
 -- Constraints for table `customers`
@@ -11861,6 +11912,13 @@ ALTER TABLE `products`
   ADD CONSTRAINT `FK_BrandProduct` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`),
   ADD CONSTRAINT `FK_CateProduct` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
   ADD CONSTRAINT `FK_ProducerProduct` FOREIGN KEY (`producer_id`) REFERENCES `producers` (`id`);
+
+--
+-- Constraints for table `replies`
+--
+ALTER TABLE `replies`
+  ADD CONSTRAINT `FK_CommentReply` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`),
+  ADD CONSTRAINT `FK_CustomerReply` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Comment;
-use App\Reply;
-use Illuminate\Support\Facades\DB;
+use App\Contact;
 
-class CommentController extends Controller
+class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +14,8 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments = Comment::all();
-        return view('admin.comments.listComment',['comments'=>$comments]);
+        $contacts = Contact::all();
+        return view('admin.contacts.listContact',['contacts' => $contacts]);
     }
 
     /**
@@ -38,20 +36,26 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        // Form validation
-        $this->validate($request, [
-            'customer_id' => 'required',
-            'product_id' => 'required',
-            'content' => 'required'
+         // Form validation
+         $this->validate($request, [
+            'username' => 'required',
+            'address' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'title' => 'required',
+            'comment' => 'required'
         ]);
         //  Store data in database
-        $comment = new Comment([
-            'customer_id' => $request->input('customer_id'),
-            'product_id' => $request->input('product_id'),
-            'content' => $request->input('content')
+        $contact = new Contact([
+            'name' => $request->input('username'),
+            'address' => $request->input('address'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'title' => $request->input('title'),
+            'content' => $request->input('comment')
         ]);
-        $comment->save();
-        return redirect()->back();
+        $contact->save();
+        return redirect()->back()->with("success","Gửi thành công, chúng tôi sẽ liên hệ lại cho bạn sau.");
     }
 
     /**
@@ -96,9 +100,6 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        Reply::where('comment_id',$id)->delete();
-        $comment = Comment::find($id);
-        $comment->delete();
-        return redirect()->back()->with('success','Xóa thành công');
+        //
     }
 }

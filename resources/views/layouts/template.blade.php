@@ -161,6 +161,7 @@
 		</div>
 	</div>
 	<script type="text/javascript" src="{{asset('assets/js/script.js')}}"></script>
+	<script type="text/javascript" src="{{asset('assets/js/reply.js')}}"></script>
 	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 	<script>
 		Stripe.setPublishableKey('pk_test_51Io6EuKxusHC1Yn9n8TXNfjnZSSajhtC9nBeQdOafioDNy9OobFyeJcbiqMRTm8cB39LfjIFIFROiw8isRKe57lT00dYrhR2Bs');

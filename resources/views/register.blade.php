@@ -33,7 +33,7 @@
                         </a>
                    </li>
                    <li>
-                        <a href="{{  route('resetpwdForm') }}">
+                        <a href="{{  route('forgetpwdForm') }}">
                              <i class="fas fa-sign-in-alt"></i>
                              Quên mật khẩu
                         </a>
@@ -101,7 +101,7 @@
                                   <label for="phone" class="col-sm-3">Số điện thoại
                                        <span class="warning">(*)</span>
                                   </label>
-                                  <input type="tel" class="col-sm-9 form-control" name="phone" required>
+                                  <input type="tel" pattern="[0-9]{10}" class="col-sm-9 form-control" name="phone" required>
                              </div>
                              <div class="row mt-4 mr-auto ml-auto">
                                   <label for="country" class="col-sm-3">Tỉnh/TP

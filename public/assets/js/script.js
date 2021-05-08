@@ -90,6 +90,34 @@ $(document).ready(function () {
             $('#product-container').html(html);
         });
     });
+    $('#add-promotion').click(function(){
+        var code = $('#promotion-code').val();
+        var token = $("input[name='_token']").val();
+        $.ajax({
+            url: "/check",
+            type: 'GET',
+            data: {
+                code:code,
+                _token: token
+            },
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            }
+        }).done(function(res){ 
+            if(res[0] === 1){
+                $('#none-promotion').hide();
+                var total = res[2].toLocaleString('it-IT', {style : 'currency', currency : 'VND'}); 
+                $('.total-cart').html("<b>"+total+"</b>");
+                $('#checkout-form').prepend($('<input type="hidden" name="promotion" />').val(res[1]));
+            }else{
+                $('#none-promotion').show();
+                var total = res[2].toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                $('#none-promotion').html("<div style='color:red;'>"+res[1]+"</div>");
+                $('.total-cart').html("<b>"+total+"</b>");
+            }
+            $('#promotion-code').val('');
+        });
+    });
 });
 function addQuantity(quan) {
     let sum = parseInt($("#product-detail-quantity-input").val()) + parseInt(quan);
