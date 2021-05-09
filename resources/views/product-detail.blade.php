@@ -112,12 +112,14 @@
                                             <div class="post-text">
                                             <p>{{ $row->content }}<i class="em em-anguished"></i> <i class="em em-anguished"></i> <i class="em em-anguished"></i></p>
                                             </div>
-                                            <a style="cursor: pointer; color:palevioletred;font-size:0.7rem;" cid="{{ $row->id }}" name_a="{{ Session::get('customer')->username }}" token="{{ csrf_token() }}" class="reply"><i class="fas fa-comment-dots"></i> Phản hồi</a>
+                                            @if(Session::has('customer'))
+                                            <a style="cursor: pointer; color:palevioletred;font-size:0.7rem;" cid="{{ $row->id }}" name_a="{{ Session::has('customer') ? Session::get('customer')->username:'' }}" token="{{ csrf_token() }}" class="reply"><i class="fas fa-comment-dots"></i> Phản hồi</a>
                                             <div class="reply-form">
                                         
                                                 <!-- Dynamic Reply form -->
                                                 
                                             </div>
+                                            @endif
                                             <div class="line-divider"></div>
                                             @foreach ($replies as $reply)
                                                 @if ($reply->comment_id === $row->id)
@@ -125,12 +127,14 @@
                                                         <img src="{{asset('assets/img/user/user.png')}}" alt="" class="profile-photo-sm">
                                                         <p><div class="profile-link mr-2">{{ $reply->name }}</div><i class="em em-laughing"></i>{{ $reply->reply_content }}</p>
                                                     </div>
-                                                    <span class="ml-2"><a style="cursor: pointer; color:palevioletred;font-size:0.7rem;" rid="{{ $row->id }}" rname="{{ Session::get('customer')->username }}" token="{{ csrf_token() }}" class="reply-to-reply"><i class="fas fa-comment-dots"></i> Phản hồi</a></span>
+                                                    @if(Session::has('customer'))
+                                                    <span class="ml-2"><a style="cursor: pointer; color:palevioletred;font-size:0.7rem;" rid="{{ $row->id }}" rname="{{  Session::has('customer') ? Session::get('customer')->username:'' }}" token="{{ csrf_token() }}" class="reply-to-reply"><i class="fas fa-comment-dots"></i> Phản hồi</a></span>
                                                     <div class="reply-to-reply-form">
                                         
                                                         <!-- Dynamic Reply form -->
                                                         
                                                     </div>
+                                                    @endif
                                                 @endif
                                             @endforeach
                                         </div>

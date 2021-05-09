@@ -25,7 +25,7 @@
                     <tbody>
                         @foreach ($contacts as $row)
                             <tr>
-                                <td>{{ $row->username }}</td>
+                                <td>{{ $row->name }}</td>
                                 <td>{{ $row->email }}</td>
                                 <td>{{ $row->phone }}</td>
                                 <td>{{ $row->address }}</td>
