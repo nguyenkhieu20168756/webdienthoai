@@ -11,7 +11,7 @@
                 <ul>
                     @foreach ($categories as $category)
                         <li><i class="fas fa-arrow-circle-right"></i> <a href="{{ route('product.category',['id' => $category->id]) }}">{{ $category->title }}</a></li>
-                        <hr />
+                        <hr /> 
                     @endforeach
                 </ul>
             </div>
